@@ -1,16 +1,33 @@
 {
-  "name": "with-mongodb",
-  "version": "0.1.0",
+  "name": "plain-notes",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
+    "@babel/runtime": "^7.11.2",
+    "@emotion/react": "^11.1.2",
+    "@emotion/styled": "^11.0.0",
+    "fontsource-ibm-plex-sans": "^3.1.5",
+    "fontsource-karla": "^3.1.6",
+    "fontsource-material-icons": "^3.1.5",
+    "history": "^5.0.0",
     "mongodb": "^3.5.9",
     "next": "latest",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-markdown": "^5.0.3",
+    "react-mde": "^11.0.0",
+    "styled-components": "^5.2.1",
+    "styled-normalize": "^8.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.21",
+    "@types/styled-components": "^5.1.5",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3"
   },
   "license": "MIT"
 }
