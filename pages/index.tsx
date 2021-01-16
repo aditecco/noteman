@@ -2,33 +2,30 @@
 Home
 --------------------------------- */
 
-import Head from 'next/head'
-import {connectToDatabase} from '../util/mongodb'
-import {Navbar} from "../components/Navbar";
-import {Button, SecondaryButton} from "../components/Button";
-import {Grid} from "../components/Grid";
-import {Sidebar} from "../components/Sidebar";
-import {List, ListItem} from "../components/List";
+import { connectToDatabase } from "../util/mongodb";
+import { Navbar } from "../components/Navbar";
+import { Button, SecondaryButton } from "../components/Button";
+import { Grid } from "../components/Grid";
+import { Sidebar } from "../components/Sidebar";
+import { List, ListItem } from "../components/List";
 import classnames from "classnames";
-import {Actionable} from "../components/Actionable";
-import {ContentArea} from "../components/ContentArea";
-import {Footer} from "../components/Footer";
-import {Layout} from "../components/Layout";
+import { Actionable } from "../components/Actionable";
+import { ContentArea } from "../components/ContentArea";
+import { Footer } from "../components/Footer";
+import { Layout } from "../components/Layout";
 import * as React from "react";
-import {SecondaryText} from "../components/SecondaryText";
+import { SecondaryText } from "../components/SecondaryText";
 import Logo from "../components/Logo";
-import ReactMde, {ReactMdeProps} from "react-mde";
-import {Input} from "../components/Input";
+import ReactMde, { ReactMdeProps } from "react-mde";
+import { Input } from "../components/Input";
 import * as ReactMarkdown from "react-markdown";
-import {Form} from "../components/Form";
-import {INote, UserGeneratedNoteContent, } from "../types";
-import {ReactNode, useContext, useEffect, useState} from "react";
-import {ThemeContext} from "styled-components";
-import {ContentEditor} from "../components/ContentEditor";
-import {Spinner} from "../components/Spinner/Spinner";
-import {Note} from "../components/Note";
-
-
+import { Form } from "../components/Form";
+import { INote, UserGeneratedNoteContent } from "../types";
+import { ReactNode, useContext, useEffect, useState } from "react";
+import { ThemeContext } from "styled-components";
+import { ContentEditor } from "../components/ContentEditor";
+import { Spinner } from "../components/Spinner/Spinner";
+import { Note } from "../components/Note";
 
 // types
 enum LocalStates {
@@ -40,7 +37,6 @@ enum LocalStates {
 }
 
 type EditorTabs = ReactMdeProps["selectedTab"];
-
 
 // CancelButton
 const CancelButton: React.FC<{ handler: () => void }> = ({ handler }) => (
@@ -78,28 +74,24 @@ const _Form: React.FC<{
   </Form>
 );
 
-
-
-export default function Home({isConnected}) {
-
-
+export default function Home({ notes }) {
   const INITIAL_CONTENT: UserGeneratedNoteContent = { title: "", body: "" };
 
   // state
   const [state, setState] = useState<LocalStates>(LocalStates.loading);
   const [currentNote, setCurrentNote] = useState<
     INote | Record<string, string | number>
-    >({});
+  >({});
   const [content, setContent] = useState<UserGeneratedNoteContent>(
     INITIAL_CONTENT
   );
   const [activeTab, setActiveTab] = useState<EditorTabs>("write");
 
-  // DB subs
-  const [{ user, notes, loading }, _setState] = useState({user: '', notes: [], loading: false});
-
   // theme
   const themeContext = useContext(ThemeContext);
+
+  // TMP
+  const user = { username: "xyz" };
 
   // resetForm
   function resetForm() {
@@ -196,8 +188,6 @@ export default function Home({isConnected}) {
   // }
   function handleUpdate() {}
 
-
-
   /**
    * handleDelete
    * @param note
@@ -223,9 +213,7 @@ export default function Home({isConnected}) {
   //     }
   //   });
   // }
-function handleDelete() {}
-
-
+  function handleDelete() {}
 
   /**
    * handleNoteSelection
@@ -334,19 +322,12 @@ function handleDelete() {}
     }
   }, [notes]);
 
-
-
   return (
-
     <Layout marginTop={60}>
       <Navbar>
         <Logo />
 
-        <Button
-          type={"button"}
-          variant={"small"}
-          onClick={() => {}}
-        >
+        <Button type={"button"} variant={"small"} onClick={() => {}}>
           Logout {user?.username}
         </Button>
       </Navbar>
@@ -362,7 +343,7 @@ function handleDelete() {}
           {/*<Input />*/}
 
           <List>
-            {notes.map((note, i: number) => (
+            {notes?.map?.((note, i: number) => (
               <ListItem
                 key={i}
                 className={classnames({
@@ -390,44 +371,48 @@ function handleDelete() {}
         <div className="footerControls">
           {/* READING */}
           {state === LocalStates.reading ? (
-              <Button
-                onClick={() => {
-                  resetForm();
-                  setState(LocalStates.creating);
-                }}
-              >
-                New Note
-              </Button>
-            ) : // CREATING
-            state === LocalStates.creating ? (
-                <>
-                  <CancelButton handler={handleCancel} />
+            <Button
+              onClick={() => {
+                resetForm();
+                setState(LocalStates.creating);
+              }}
+            >
+              New Note
+            </Button>
+          ) : // CREATING
+          state === LocalStates.creating ? (
+            <>
+              <CancelButton handler={handleCancel} />
 
-                  <Button onClick={handleSubmit}>Submit</Button>
-                </>
-              ) : // UPDATING
-              state === LocalStates.updating ? (
-                <>
-                  <CancelButton handler={handleCancel} />
+              <Button onClick={handleSubmit}>Submit</Button>
+            </>
+          ) : // UPDATING
+          state === LocalStates.updating ? (
+            <>
+              <CancelButton handler={handleCancel} />
 
-                  <Button onClick={handleUpdate(currentNote)}>Save</Button>
-                </>
-              ) : null}
+              <Button onClick={handleUpdate(currentNote)}>Save</Button>
+            </>
+          ) : null}
         </div>
       </Footer>
     </Layout>
-
-  )
-
-
+  );
 }
 
-export async function getServerSideProps(context) {
-  const {client} = await connectToDatabase()
+// getServerSideProps
+export async function getServerSideProps() {
+  const { db } = await connectToDatabase();
 
-  const isConnected = await client.isConnected() // Returns true or false
+  const notes = await db
+    .collection("notes")
+    // .find({ userId: user?._id },)
+    .find()
+    .sort({ timestamp: -1 })
+    .limit(20)
+    .toArray();
 
   return {
-    props: {isConnected},
-  }
+    props: { notes: JSON.parse(JSON.stringify(notes)) },
+  };
 }
