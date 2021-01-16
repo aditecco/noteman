@@ -10,6 +10,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 import "fontsource-material-icons/base-400-normal.css";
 import "fontsource-karla/400-normal.css";
 import "fontsource-ibm-plex-sans/400-normal.css";
+import "react-mde/lib/styles/css/react-mde-all.css";
 
 const GlobalStyles = createGlobalStyle`
   // normalize.css
@@ -32,11 +33,11 @@ const GlobalStyles = createGlobalStyle`
 class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props;
+
     return (
       <ErrorBoundary>
         <ThemeProvider theme={defaultTheme}>
           <GlobalStyles />
-
           <Component {...pageProps} />
         </ThemeProvider>
       </ErrorBoundary>

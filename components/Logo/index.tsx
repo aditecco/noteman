@@ -23,7 +23,7 @@ const Logo: React.FC = () => {
   return (
     <LogoContainer>
       <i className="material-icons">article</i>
-      <span className="logotype">PlainNotes</span>
+      <span className="logotype">NoteMan</span>
     </LogoContainer>
   );
 };
