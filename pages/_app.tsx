@@ -1,7 +1,6 @@
 /* ---------------------------------
 _App
 --------------------------------- */
-import App from "next/app";
 import * as React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import normalize from "styled-normalize";
@@ -30,19 +29,13 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-class MyApp extends App {
-  render() {
-    const { Component, pageProps } = this.props;
-
-    return (
-      <ErrorBoundary>
-        <ThemeProvider theme={defaultTheme}>
-          <GlobalStyles />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </ErrorBoundary>
-    );
-  }
+export default function App({ Component, pageProps }) {
+  return (
+    <ErrorBoundary>
+      <ThemeProvider theme={defaultTheme}>
+        <GlobalStyles />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </ErrorBoundary>
+  );
 }
-
-export default MyApp;
