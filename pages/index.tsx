@@ -129,91 +129,89 @@ export default function Home({ notes }) {
    * handleSubmit
    * @param e
    */
-  // function handleSubmit(e: React.MouseEvent): undefined | void {
-  //   e.preventDefault();
-  //
-  //   Meteor.call(
-  //     "notes.insert",
-  //     content,
-  //     // cb
-  //     (err: Meteor.Error, result: string) => {
-  //       if (err) {
-  //         // TODO display an error message
-  //
-  //         handleCancel();
-  //
-  //         console.error(err.stack);
-  //         throw err;
-  //       }
-  //
-  //       // TODO fix this
-  //       const newNote = notes.find(note => note?._id === result);
-  //
-  //       handleCancel();
-  //       setCurrentNote(newNote ?? [...notes].shift());
-  //     }
-  //   );
-  // }
-  function handleSubmit() {}
+  async function handleSubmit(e: React.MouseEvent): Promise<undefined | void> {
+    e.preventDefault();
+
+    try {
+      const id = await fetch("/api/notes/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content }),
+      });
+
+      // TODO fix this
+      const newNote = notes.find(note => note?._id === id);
+
+      handleCancel();
+      setCurrentNote(newNote ?? [...notes].shift());
+    } catch (err) {
+      // TODO display an error message
+
+      handleCancel();
+
+      console.error(err);
+      throw err;
+    }
+  }
 
   /**
    * handleUpdate
    * @param note
    */
-  // function handleUpdate(
-  //   note: INote
-  // ): undefined | ((e: React.MouseEvent) => void) {
-  //   return function (e) {
-  //     e.preventDefault(); // TODO do we need this?
-  //
-  //     Meteor.call(
-  //       "notes.update",
-  //       [note?._id, content],
-  //       // cb
-  //       (err: Meteor.Error) => {
-  //         if (err) {
-  //           // TODO display an error message
-  //
-  //           handleCancel();
-  //
-  //           console.error(err.stack);
-  //           throw err;
-  //         }
-  //
-  //         // TODO show a success message
-  //         handleCancel();
-  //       }
-  //     );
-  //   };
-  // }
-  function handleUpdate() {}
+  function handleUpdate(
+    note: INote
+  ): undefined | ((e: React.MouseEvent) => void) {
+    return async function (e) {
+      e.preventDefault(); // TODO do we need this?
+
+      try {
+        await fetch("/api/notes/", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ args: [note?._id, content] }),
+        });
+
+        handleCancel();
+      } catch (err) {
+        // TODO display an error message
+
+        handleCancel();
+
+        console.error(err.stack);
+        throw err;
+      }
+    };
+  }
 
   /**
    * handleDelete
    * @param note
    */
-  // function handleDelete(note: INote): void | undefined {
-  //   const id = note?._id;
-  //
-  //   Meteor.call("notes.remove", id, (err: Meteor.Error) => {
-  //     if (err) {
-  //       // TODO display an error message
-  //
-  //       console.error(err.stack);
-  //       throw err;
-  //     }
-  //
-  //     // TODO show a confirmation
-  //     const i = notes.findIndex(note => note?._id === id);
-  //
-  //     if (i === 0) {
-  //       setCurrentNote(notes[i + 1] ?? [...notes].shift());
-  //     } else {
-  //       setCurrentNote(notes[i - 1] ?? [...notes].shift());
-  //     }
-  //   });
-  // }
-  function handleDelete() {}
+  async function handleDelete(note: INote): Promise<void | undefined> {
+    const id = note?._id;
+
+    try {
+      await fetch("/api/notes/", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      // TODO show a confirmation
+      const i = notes.findIndex(note => note?._id === id);
+
+      if (i === 0) {
+        setCurrentNote(notes[i + 1] ?? [...notes].shift());
+      } else {
+        setCurrentNote(notes[i - 1] ?? [...notes].shift());
+      }
+    } catch (err) {
+      // TODO display an error message
+
+      console.error(err.stack);
+      throw err;
+    }
+  }
 
   /**
    * handleNoteSelection
