@@ -39,13 +39,14 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       }
 
       // this will return the ID of the newly created note
-      const { ops } = await db.collection("notes").insertOne({
+      const { insertedId } = await db.collection("notes").insertOne({
         ...content,
         userId,
         timestamp: Date.now(),
       });
 
-      return res.json(ops);
+      res.send(insertedId);
+      break;
     }
 
     /**
@@ -135,7 +136,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         .limit(20)
         .toArray();
 
-      return res.json(notes);
+      res.json(notes);
+      break;
     }
   }
 }

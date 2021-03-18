@@ -86,12 +86,28 @@ export default function Home({ notes }) {
     INITIAL_CONTENT
   );
   const [activeTab, setActiveTab] = useState<EditorTabs>("write");
+  const [_notes, _setNotes] = useState([]);
 
   // theme
   const themeContext = useContext(ThemeContext);
 
-  // TMP
+  // TODO TMP
   const user = { username: "xyz" };
+
+  /**
+   * fetchNotes
+   */
+  async function fetchNotes() {
+    try {
+      const request = await fetch("/api/notes/");
+
+      const notes = await request.json();
+
+      _setNotes(notes);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   // resetForm
   function resetForm() {
@@ -138,6 +154,9 @@ export default function Home({ notes }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content }),
       });
+
+      //
+      fetchNotes();
 
       // TODO fix this
       const newNote = notes.find(note => note?._id === id);
