@@ -10,6 +10,8 @@ import "fontsource-material-icons/base-400-normal.css";
 import "fontsource-karla/400-normal.css";
 import "fontsource-ibm-plex-sans/400-normal.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
+import { store } from "../store/store";
+import { Provider } from "react-redux";
 
 const GlobalStyles = createGlobalStyle`
   // normalize.css
@@ -31,11 +33,13 @@ const GlobalStyles = createGlobalStyle`
 
 export default function App({ Component, pageProps }) {
   return (
-    <ErrorBoundary>
-      <ThemeProvider theme={defaultTheme}>
-        <GlobalStyles />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </ErrorBoundary>
+    <Provider store={store}>
+      <ErrorBoundary>
+        <ThemeProvider theme={defaultTheme}>
+          <GlobalStyles />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </ErrorBoundary>
+    </Provider>
   );
 }

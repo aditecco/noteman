@@ -14,6 +14,8 @@ import { Layout } from "../components/Layout";
 import Header from "../components/Header";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { login } from "../store/auth";
 
 // const API = new UsersPermissionsUserApi();
 
@@ -22,6 +24,7 @@ export default function Index(): ReactElement | null {
   const [password, setPassword] = useState<string>("");
   const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   // handleChange
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -50,6 +53,7 @@ export default function Index(): ReactElement | null {
         }
 
         setToken(data?.jwt);
+        dispatch(login(data));
       })
       .catch(err => console.error(err))
       .finally(() => {
