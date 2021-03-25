@@ -2,24 +2,34 @@
 Types
 --------------------------------- */
 
-import { Meteor } from "meteor/meteor";
-import React from "react";
-import User = Meteor.User;
+type Role = {
+  id: string;
+  name: string;
+  description: string;
+  type: string;
+  permissions: string[];
+  users: string[];
+  created_by: string;
+  updated_by: string;
+};
 
-export interface UserGeneratedNoteContent {
+type Note = {
+  id: string;
   title: string;
   body: string;
-  tags?: string[];
-}
+  author: string;
+  published_at: string;
+  created_by: string;
+  updated_by: string;
+};
 
-export interface INote extends UserGeneratedNoteContent {
-  _id: string;
-  userId: User["_id"];
-  timestamp: number;
-}
-
-export type ActionDef = {
-  name: string;
-  icon?: string;
-  callback: (e: React.MouseEvent) => void;
+type User = {
+  id: string;
+  username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  role: Role;
+  notes: Note[];
 };

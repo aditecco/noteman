@@ -14,8 +14,8 @@ import { Layout } from "../components/Layout";
 import Header from "../components/Header";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
 import { login } from "../store/auth";
+import { useAppDispatch } from "../hooks";
 
 // const API = new UsersPermissionsUserApi();
 
@@ -24,7 +24,7 @@ export default function Index(): ReactElement | null {
   const [password, setPassword] = useState<string>("");
   const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // handleChange
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {

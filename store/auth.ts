@@ -2,19 +2,27 @@
 auth slice
 --------------------------------- */
 
-import { createSlice } from "@reduxjs/toolkit";
-import { log } from "../util/utils";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+type AuthState = {
+  user: User;
+  jwt: string;
+};
+
+type AuthResponse = AuthState;
+
+const initialState: AuthState = {
+  user: null,
+  jwt: null,
+};
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    user: null,
-  },
+  initialState,
   reducers: {
-    login: (state, action) => {
-      log("from reducer ==> ", state, action.payload);
-
-      state.user = action.payload.user;
+    login: (state, action: PayloadAction<AuthResponse>) => {
+      state.user = action?.payload?.user;
+      state.jwt = action?.payload?.jwt;
     },
   },
 });
