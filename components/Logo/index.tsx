@@ -11,6 +11,11 @@ const LogoContainer = styled.div.attrs({ className: "LogoContainer" })`
   align-items: center;
   height: 48px;
 
+  > .logotype,
+  > .material-icons {
+    color: rebeccapurple;
+  } // TODO 'accent' var
+
   > .logotype {
     margin-left: 6px;
     font-family: "IBM Plex Sans", sans-serif;
