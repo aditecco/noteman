@@ -364,13 +364,13 @@ export default function Notes({ notes }) {
               <ListItem
                 key={i}
                 className={classnames({
-                  selected: note?._id === currentNote?._id,
+                  selected: note?.id === currentNote?._id,
                 })}
               >
                 <Actionable onClick={handleNoteSelection(note)}>
                   <span className={"title"}>{note?.title}</span>
                   <span className={"timestamp"}>
-                    {new Date(note?.timestamp).toLocaleString()}
+                    {new Date(note?.published_at).toLocaleString()}
                   </span>
                 </Actionable>
               </ListItem>

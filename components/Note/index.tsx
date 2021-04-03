@@ -5,9 +5,9 @@ Note
 import React from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
-import {ActionDef} from "/types";
+import { ActionDef } from "/types";
 import PageHeader from "../PageHeader";
-import {INote} from "../../types";
+import { INote } from "../../types";
 
 type OwnProps = {
   note: INote | Record<string, unknown>; // TODO
@@ -25,7 +25,9 @@ const _Note: React.FC<OwnProps> = ({
     <article className={className}>
       <PageHeader
         title={note?.title}
-        subtitle={"Created on: " + new Date(note?.timestamp).toLocaleString()}
+        subtitle={
+          "Created on: " + new Date(note?.published_at).toLocaleString()
+        }
         actions={actions}
       />
 
