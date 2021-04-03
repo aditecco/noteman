@@ -4,9 +4,8 @@ auth slice
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  AuthResponse,
-  AuthState,
-  NewUsersPermissionsUser,
+  InferredAuthLocalPostResponse,
+  InferredAuthLocalRegisterPostResponse,
   UsersPermissionsUser,
 } from "../../types";
 import { getUser, signInUser, signUpUser } from "./thunks";
@@ -40,7 +39,7 @@ export const authSlice = createSlice({
      */
     [(signUpUser.fulfilled as unknown) as string](
       state,
-      action: PayloadAction<AuthResponse<NewUsersPermissionsUser>>
+      action: PayloadAction<InferredAuthLocalRegisterPostResponse>
     ) {
       return {
         ...state,
@@ -55,7 +54,7 @@ export const authSlice = createSlice({
      */
     [(signInUser.fulfilled as unknown) as string](
       state,
-      action: PayloadAction<AuthResponse>
+      action: PayloadAction<InferredAuthLocalPostResponse>
     ) {
       return {
         ...state,
