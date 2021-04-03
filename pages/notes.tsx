@@ -153,6 +153,16 @@ export default function Notes({ notes }) {
   async function handleSubmit(e: React.MouseEvent): Promise<undefined | void> {
     e.preventDefault();
 
+    dispatch(
+      postNotes({
+        note: {
+          ...content,
+        },
+        token,
+      })
+    );
+
+    /*
     try {
       const id = await fetch("/api/notes/", {
         method: "POST",

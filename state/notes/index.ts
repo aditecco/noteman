@@ -4,7 +4,7 @@ notes slice
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { initialState } from "./initialState";
-import { getNotes } from "./thunks";
+import { getNotes, postNotes } from "./thunks";
 import { Notes } from "../../gen/models";
 
 export const notesSlice = createSlice({
@@ -33,6 +33,18 @@ export const notesSlice = createSlice({
       action: PayloadAction<Notes[]>
     ) {
       state.notes = action?.payload ?? [];
+    },
+
+    /**
+     * postNotes
+     * @param state
+     * @param action
+     */
+    [(postNotes.fulfilled as unknown) as string](
+      state,
+      action: PayloadAction<Notes>
+    ) {
+      state.notes.push(action?.payload);
     },
   },
 });
