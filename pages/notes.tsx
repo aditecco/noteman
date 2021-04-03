@@ -24,8 +24,12 @@ import { ContentEditor } from "../components/ContentEditor";
 import { Spinner } from "../components/Spinner/Spinner";
 import { Note } from "../components/Note";
 import Header from "../components/Header";
-import axios from "axios";
-import { log } from "../util/utils";
+import { useUser } from "../hooks/useUser";
+import { TOKEN_STORAGE_KEY } from "../constants";
+import { router } from "next/client";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { signOutUser } from "../state/auth";
+import { getNotes } from "../state/notes/thunks";
 
 // types
 enum LocalStates {
@@ -329,16 +333,13 @@ export default function Notes({ notes }) {
 
   // useEffect
   useEffect(() => {
-    if (!Object.keys(currentNote).length && state !== LocalStates.creating) {
-      console.count("FX executing");
-
-      setState(LocalStates.loading);
-
-      notes?.length && setCurrentNote([...notes]?.shift());
-
-      setState(LocalStates.reading);
-    }
-  }, [notes]);
+    dispatch(
+      getNotes({
+        authorId: user?.id,
+        token,
+      })
+    ).then(() => setState(LocalStates.reading));
+  }, []);
 
   return (
     <Layout marginTop={60}>
