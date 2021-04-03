@@ -31,6 +31,10 @@ export default function useAuthToken() {
         .push("/notes")
         .then(() => sessionStorage?.setItem?.(TOKEN_STORAGE_KEY, token));
     }
+
+    if (token && JWT) {
+      router.push("/notes");
+    }
   }, [token]);
 
   return { token };

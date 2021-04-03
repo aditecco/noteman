@@ -7,7 +7,7 @@ import { UsersPermissionsUser } from "../gen/models";
 /**
  * AuthLocalPost
  */
-export type InferredAuthLocalPostRequestParams = {
+export type InferredAuthLocalPostRequestBody = {
   identifier: string;
   password: string;
 };
@@ -20,16 +20,7 @@ export type InferredAuthLocalPostResponse = {
 /**
  * AuthLocalRegisterPost
  */
-export type AuthLocalRegisterPostResponse = InferredAuthLocalPostResponse;
-
-/**
- * Generic AuthResponse
- */
-export type AuthResponse<
-  U = UsersPermissionsUser
-> = InferredAuthLocalPostResponse & {
-  user: U;
-};
+export type InferredAuthLocalRegisterPostResponse = InferredAuthLocalPostResponse;
 
 // models re-export
 export * from "../gen/models";
