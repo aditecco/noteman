@@ -10,13 +10,11 @@ import {
   UsersPermissionsUser,
 } from "../../types";
 import { getUser, signInUser, signUpUser } from "./thunks";
-
-const initialState: AuthState = {
-  user: null,
-  jwt: null,
-};
+import { initialState } from "./initialState";
 
 export const authSlice = createSlice({
+  // ref: https://redux-toolkit.js.org/usage/immer-reducers#mutating-and-returning-state
+  // ref: https://redux-toolkit.js.org/usage/immer-reducers#resetting-and-replacing-state
   name: "auth",
   initialState,
 
@@ -24,9 +22,8 @@ export const authSlice = createSlice({
    * reducers
    */
   reducers: {
-    signOutUser: state => {
-      state.user = null;
-      state.jwt = null;
+    signOutUser() {
+      return initialState;
     },
   },
 
@@ -34,17 +31,21 @@ export const authSlice = createSlice({
    * extraReducers
    */
   extraReducers: {
+    // TODO pending & error cases
+
     /**
      * signUpUser
      * @param state
      * @param action
      */
-    [(signUpUser.fulfilled as unknown) as string]: (
+    [(signUpUser.fulfilled as unknown) as string](
       state,
       action: PayloadAction<AuthResponse<NewUsersPermissionsUser>>
-    ) => {
-      state.user = action?.payload?.user;
-      state.jwt = action?.payload?.jwt;
+    ) {
+      return {
+        ...state,
+        ...(action?.payload ?? {}),
+      };
     },
 
     /**
@@ -52,12 +53,14 @@ export const authSlice = createSlice({
      * @param state
      * @param action
      */
-    [(signInUser.fulfilled as unknown) as string]: (
+    [(signInUser.fulfilled as unknown) as string](
       state,
       action: PayloadAction<AuthResponse>
-    ) => {
-      state.user = action?.payload?.user;
-      state.jwt = action?.payload?.jwt;
+    ) {
+      return {
+        ...state,
+        ...(action?.payload ?? {}),
+      };
     },
 
     /**
@@ -65,10 +68,10 @@ export const authSlice = createSlice({
      * @param state
      * @param action
      */
-    [(getUser.fulfilled as unknown) as string]: (
+    [(getUser.fulfilled as unknown) as string](
       state,
       action: PayloadAction<UsersPermissionsUser>
-    ) => {
+    ) {
       state.user = action?.payload;
     },
   },

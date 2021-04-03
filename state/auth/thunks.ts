@@ -12,7 +12,9 @@ import {
 import { InferredAuthLocalPostRequestParams } from "../../types";
 import { log } from "../../util/utils";
 
-// signUpUser
+/**
+ * signUpUser
+ */
 export const signUpUser = createAsyncThunk(
   "auth/signUpUser",
 
@@ -29,7 +31,9 @@ export const signUpUser = createAsyncThunk(
   }
 );
 
-// signInUser
+/**
+ * signInUser
+ */
 export const signInUser = createAsyncThunk(
   "auth/signInUser",
 
@@ -46,7 +50,9 @@ export const signInUser = createAsyncThunk(
   }
 );
 
-// getUser
+/**
+ * getUser
+ */
 export const getUser = createAsyncThunk(
   "auth/getUser",
   async (token: string) => {
