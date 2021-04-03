@@ -2,44 +2,46 @@
 AuthForm
 --------------------------------- */
 
-import React, { useState } from "react";
-import { capitalize } from "../util/utils";
+import * as React from "react";
+import { PropsWithChildren, ReactElement } from "react";
+import { Form } from "./Form";
+import { Input } from "./Input";
+import { Button } from "./Button";
 
-export const AuthForm = ({ intent, actionHandler }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  return (
-    <form className="authForm">
-      <label htmlFor="emailField">{`${capitalize(intent)} email`}</label>
-      <input
-        id="emailField"
-        name="emailField"
-        type="text"
-        className="BaseInput"
-        placeholder={`${intent}.email@example.com`}
-        value={email}
-        onChange={e => setEmail(e.currentTarget.value)}
-      />
-
-      <label htmlFor="passwordField">Password</label>
-      <input
-        id="passwordField"
-        name="passwordField"
-        type="password"
-        className="BaseInput"
-        placeholder="xyz"
-        value={password}
-        onChange={e => setPassword(e.currentTarget.value)}
-      />
-
-      <button
-        type="button"
-        className="BaseButton"
-        onClick={() => actionHandler({ intent, email, password })}
-      >
-        {capitalize(intent)}
-      </button>
-    </form>
-  );
+export type FieldConfig = {
+  name: string;
+  placeholder?: string;
+  type?: string;
+  value: string;
 };
+
+type OwnProps = {
+  fields: FieldConfig[];
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  submitLabel: string;
+  handleSubmit: React.FormEventHandler;
+};
+
+export default function AuthForm({
+  fields,
+  handleChange,
+  handleSubmit,
+  submitLabel,
+}: PropsWithChildren<OwnProps>): ReactElement | null {
+  return (
+    <Form onSubmit={handleSubmit}>
+      {fields?.map?.((field, i) => (
+        <Input
+          key={i}
+          type={field?.type ?? "text"}
+          name={field?.name}
+          placeholder={field?.placeholder}
+          value={field?.value}
+          onChange={handleChange}
+        />
+      ))}
+
+      <Button type={"submit"}>{submitLabel}</Button>
+    </Form>
+  );
+}
