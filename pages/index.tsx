@@ -77,8 +77,7 @@ export default function Index(): ReactElement | null {
 
       // TODO show a success notif
 
-      setIdentifier("");
-      setPassword("");
+      resetFields();
     };
   }
 
