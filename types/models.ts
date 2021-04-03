@@ -3,6 +3,7 @@ models
 --------------------------------- */
 
 import { UsersPermissionsUser } from "../gen/models";
+import { AuthState } from "./store";
 
 /**
  * AuthLocalPost
@@ -12,7 +13,7 @@ export type InferredAuthLocalPostRequestParams = {
   password: string;
 };
 
-export type AuthLocalPostResponse = {
+export type InferredAuthLocalPostResponse = {
   jwt: string;
   user: UsersPermissionsUser;
 };
@@ -20,7 +21,16 @@ export type AuthLocalPostResponse = {
 /**
  * AuthLocalRegisterPost
  */
-export type AuthLocalRegisterPostResponse = AuthLocalPostResponse;
+export type AuthLocalRegisterPostResponse = InferredAuthLocalPostResponse;
+
+/**
+ * Generic AuthResponse
+ */
+export type AuthResponse<
+  U = UsersPermissionsUser
+> = InferredAuthLocalPostResponse & {
+  user: U;
+};
 
 // models re-export
 export * from "../gen/models";
