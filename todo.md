@@ -2,7 +2,7 @@
 
 ### It should:
 
-- [ ] Offer the ability to create an account
+- [x] Offer the ability to create an account
 - [ ] Provide an account profile page
 - [ ] Provide an account settings page
 - [ ] When creating a note, require title & content (form engine/validation)

@@ -31,7 +31,12 @@ export default function Index(): ReactElement | null {
       name: "identifier",
       // type: "email",
     },
-    { value: password, placeholder: "", name: "password", type: "password" },
+    {
+      value: password,
+      placeholder: "password",
+      name: "password",
+      type: "password",
+    },
   ];
 
   // handleChange

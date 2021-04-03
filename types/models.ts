@@ -3,7 +3,6 @@ models
 --------------------------------- */
 
 import { UsersPermissionsUser } from "../gen/models";
-import { AuthState } from "./store";
 
 /**
  * AuthLocalPost
