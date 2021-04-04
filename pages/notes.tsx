@@ -160,32 +160,13 @@ export default function Notes({ notes }) {
         },
         token,
       })
-    );
-
-    /*
-    try {
-      const id = await fetch("/api/notes/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
-      });
-
-      //
-      fetchNotes();
-
-      // TODO fix this
-      const newNote = notes.find(note => note?._id === id);
-
-      handleCancel();
-      setCurrentNote(newNote ?? [...notes].shift());
-    } catch (err) {
-      // TODO display an error message
+    ).then(fulfilledAction => {
+      const { payload: newNote } = fulfilledAction;
 
       handleCancel();
 
-      console.error(err);
-      throw err;
-    }
+      setCurrentNote((newNote as _Notes) ?? [...notes].shift());
+    });
   }
 
   /**
