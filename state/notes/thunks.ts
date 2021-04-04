@@ -39,3 +39,42 @@ export const postNotes = createAsyncThunk(
     )) as Notes;
   }
 );
+
+/**
+ * putNotes
+ */
+export const putNotes = createAsyncThunk(
+  "notes/putNotes",
+
+  async (params: {
+    id: string;
+    newContent: Partial<NewNotes>;
+    token: string;
+  }) => {
+    const { id, newContent, token } = params;
+
+    return (await Gateway.putData(
+      `/notes/${id}`,
+      { ...newContent },
+      { headers: { Authorization: "Bearer " + token } }
+    )) as Notes;
+  }
+);
+
+/**
+ * deleteNotes
+ */
+export const deleteNotes = createAsyncThunk(
+  "notes/deleteNotes",
+  arg => {}
+
+  // async (params: { note: Partial<NewNotes>; token: string }) => {
+  //   const { note, token } = params;
+  //
+  //   return (await Gateway.postData(
+  //     `/notes`,
+  //     { ...note },
+  //     { headers: { Authorization: "Bearer " + token } }
+  //   )) as Notes;
+  // }
+);

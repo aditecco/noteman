@@ -174,27 +174,23 @@ export default function Notes({ notes }) {
    * @param note
    */
   function handleUpdate(
-    note: INote
+    note: _Notes
   ): undefined | ((e: React.MouseEvent) => void) {
     return async function (e) {
       e.preventDefault(); // TODO do we need this?
 
-      try {
-        await fetch("/api/notes/", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ args: [note?._id, content] }),
-        });
-
+      dispatch(
+        putNotes({
+          id: note.id,
+          newContent: {
+            ...content,
+            // author: user?._id,
+          },
+          token,
+        })
+      ).then(() => {
         handleCancel();
-      } catch (err) {
-        // TODO display an error message
-
-        handleCancel();
-
-        console.error(err.stack);
-        throw err;
-      }
+      });
     };
   }
 
