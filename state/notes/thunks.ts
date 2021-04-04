@@ -66,15 +66,16 @@ export const putNotes = createAsyncThunk(
  */
 export const deleteNotes = createAsyncThunk(
   "notes/deleteNotes",
-  arg => {}
 
-  // async (params: { note: Partial<NewNotes>; token: string }) => {
-  //   const { note, token } = params;
-  //
-  //   return (await Gateway.postData(
-  //     `/notes`,
-  //     { ...note },
-  //     { headers: { Authorization: "Bearer " + token } }
-  //   )) as Notes;
-  // }
+  async (params: { id: string; token: string }) => {
+    const { id, token } = params;
+
+    return (await Gateway.deleteData(
+      `/notes/${id}`,
+      {},
+      {
+        headers: { Authorization: "Bearer " + token },
+      }
+    )) as Notes;
+  }
 );

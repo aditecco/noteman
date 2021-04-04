@@ -94,6 +94,30 @@ export default class APIGateway {
   }
 
   /**
+   * deleteData
+   * @param endpoint
+   * @param payload
+   * @param opts
+   */
+  async deleteData(
+    endpoint: string,
+    payload: Record<string, unknown>,
+    opts?: Record<string, unknown>
+  ) {
+    try {
+      const response: AxiosResponse = await this.client.delete(
+        this.baseURL + endpoint,
+        payload,
+        opts
+      );
+
+      return response?.data ?? {};
+    } catch (err) {
+      this.errorHandler(err);
+    }
+  }
+
+  /**
    * errorHandler
    * @param error
    */

@@ -4,7 +4,7 @@ notes slice
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { initialState } from "./initialState";
-import { getNotes, postNotes, putNotes } from "./thunks";
+import { deleteNotes, getNotes, postNotes, putNotes } from "./thunks";
 import { Notes } from "../../gen/models";
 
 export const notesSlice = createSlice({
@@ -57,9 +57,24 @@ export const notesSlice = createSlice({
       action: PayloadAction<Notes>
     ) {
       const { payload: modified } = action;
-      const which = state.notes.findIndex(note => note._id === modified?._id);
+      const which = state.notes.findIndex(note => note.id === modified?.id);
 
       state.notes[which] = modified;
+    },
+
+    /**
+     * deleteNotes
+     * @param state
+     * @param action
+     */
+    [(deleteNotes.fulfilled as unknown) as string](
+      state,
+      action: PayloadAction<Notes>
+    ) {
+      const { payload: deleted } = action;
+      const which = state.notes.findIndex(note => note.id === deleted?.id);
+
+      state.notes.splice(which, 1);
     },
   },
 });
