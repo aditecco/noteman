@@ -70,6 +70,30 @@ export default class APIGateway {
   }
 
   /**
+   * putData
+   * @param endpoint
+   * @param payload
+   * @param opts
+   */
+  async putData(
+    endpoint: string,
+    payload: Record<string, unknown>,
+    opts?: Record<string, unknown>
+  ) {
+    try {
+      const response: AxiosResponse = await this.client.put(
+        this.baseURL + endpoint,
+        payload,
+        opts
+      );
+
+      return response?.data ?? {};
+    } catch (err) {
+      this.errorHandler(err);
+    }
+  }
+
+  /**
    * errorHandler
    * @param error
    */
