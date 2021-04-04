@@ -10,9 +10,14 @@ import "fontsource-material-icons/base-400-normal.css";
 import "fontsource-karla/400-normal.css";
 import "fontsource-ibm-plex-sans/400-normal.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
-import { store } from "../store/store";
+import { store } from "../state/store";
 import { Provider } from "react-redux";
+import APIGateway from "../util/api";
 
+// Gateway
+export const Gateway = new APIGateway();
+
+// GlobalStyles
 const GlobalStyles = createGlobalStyle`
   // normalize.css
   ${normalize}
@@ -31,6 +36,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
+// App
 export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
