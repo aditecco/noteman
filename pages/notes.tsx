@@ -83,7 +83,7 @@ const _Form: React.FC<{
 
 // Notes
 export default function Notes() {
-  const INITIAL_CONTENT: Partial<_Notes> | Partial<NewNotes> = {
+  const INITIAL_CONTENT: Partial<NewNotes> = {
     title: "",
     body: "",
   };
@@ -91,10 +91,9 @@ export default function Notes() {
   // state
   const [state, setState] = useState<LocalStates>(LocalStates.loading);
   const [activeTab, setActiveTab] = useState<EditorTabs>("write");
+  const [currentNote, setCurrentNote] = useState<Partial<_Notes>>({});
 
-  const [currentNote, setCurrentNote] = useState<_Notes | {}>({});
-
-  const [content, setContent] = useState<Partial<_Notes> | Partial<NewNotes>>(
+  const [content, setContent] = useState<Partial<NewNotes>>(
     INITIAL_CONTENT
   );
 
@@ -371,7 +370,7 @@ export default function Notes() {
               <ListItem
                 key={i}
                 className={classnames({
-                  selected: note?.id === currentNote?._id,
+                  selected: note?.id === currentNote?.id,
                 })}
               >
                 <Actionable onClick={handleNoteSelection(note)}>
