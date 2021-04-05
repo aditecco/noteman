@@ -2,14 +2,14 @@
 notes slice
 --------------------------------- */
 
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { initialState } from "./initialState";
 import { deleteNotes, getNotes, postNotes, putNotes } from "./thunks";
-import { Notes } from "../../gen/models";
 
 export const notesSlice = createSlice({
   // ref: https://redux-toolkit.js.org/usage/immer-reducers#mutating-and-returning-state
   // ref: https://redux-toolkit.js.org/usage/immer-reducers#resetting-and-replacing-state
+  // ref: https://redux-toolkit.js.org/usage/usage-with-typescript#type-safety-with-extrareducers
   name: "notes",
   initialState,
 
@@ -21,61 +21,50 @@ export const notesSlice = createSlice({
   /**
    * extraReducers
    */
-  extraReducers: {
+  extraReducers: builder => {
     // TODO pending & error cases
+
     /**
      * getNotes
      * @param state
      * @param action
      */
-    [(getNotes.fulfilled as unknown) as string](
-      state,
-      action: PayloadAction<Notes[]>
-    ) {
+    builder.addCase(getNotes.fulfilled, function (state, action) {
       state.notes = action?.payload ?? [];
-    },
+    });
 
     /**
      * postNotes
      * @param state
      * @param action
      */
-    [(postNotes.fulfilled as unknown) as string](
-      state,
-      action: PayloadAction<Notes>
-    ) {
+    builder.addCase(postNotes.fulfilled, function (state, action) {
       state.notes.push(action?.payload);
-    },
+    });
 
     /**
      * putNotes
      * @param state
      * @param action
      */
-    [(putNotes.fulfilled as unknown) as string](
-      state,
-      action: PayloadAction<Notes>
-    ) {
+    builder.addCase(putNotes.fulfilled, function (state, action) {
       const { payload: modified } = action;
       const which = state.notes.findIndex(note => note.id === modified?.id);
 
       state.notes[which] = modified;
-    },
+    });
 
     /**
      * deleteNotes
      * @param state
      * @param action
      */
-    [(deleteNotes.fulfilled as unknown) as string](
-      state,
-      action: PayloadAction<Notes>
-    ) {
+    builder.addCase(deleteNotes.fulfilled, function (state, action) {
       const { payload: deleted } = action;
       const which = state.notes.findIndex(note => note.id === deleted?.id);
 
       state.notes.splice(which, 1);
-    },
+    });
   },
 });
 

@@ -2,18 +2,14 @@
 auth slice
 --------------------------------- */
 
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  InferredAuthLocalPostResponse,
-  InferredAuthLocalRegisterPostResponse,
-  UsersPermissionsUser,
-} from "../../types";
+import { createSlice } from "@reduxjs/toolkit";
 import { getUser, signInUser, signUpUser } from "./thunks";
 import { initialState } from "./initialState";
 
 export const authSlice = createSlice({
   // ref: https://redux-toolkit.js.org/usage/immer-reducers#mutating-and-returning-state
   // ref: https://redux-toolkit.js.org/usage/immer-reducers#resetting-and-replacing-state
+  // ref: https://redux-toolkit.js.org/usage/usage-with-typescript#type-safety-with-extrareducers
   name: "auth",
   initialState,
 
@@ -29,7 +25,7 @@ export const authSlice = createSlice({
   /**
    * extraReducers
    */
-  extraReducers: {
+  extraReducers: builder => {
     // TODO pending & error cases
 
     /**
@@ -37,42 +33,33 @@ export const authSlice = createSlice({
      * @param state
      * @param action
      */
-    [(signUpUser.fulfilled as unknown) as string](
-      state,
-      action: PayloadAction<InferredAuthLocalRegisterPostResponse>
-    ) {
+    builder.addCase(signUpUser.fulfilled, function (state, action) {
       return {
         ...state,
         ...(action?.payload ?? {}),
       };
-    },
+    });
 
     /**
      * signInUser
      * @param state
      * @param action
      */
-    [(signInUser.fulfilled as unknown) as string](
-      state,
-      action: PayloadAction<InferredAuthLocalPostResponse>
-    ) {
+    builder.addCase(signInUser.fulfilled, function (state, action) {
       return {
         ...state,
         ...(action?.payload ?? {}),
       };
-    },
+    });
 
     /**
      * getUser
      * @param state
      * @param action
      */
-    [(getUser.fulfilled as unknown) as string](
-      state,
-      action: PayloadAction<UsersPermissionsUser>
-    ) {
+    builder.addCase(getUser.fulfilled, function (state, action) {
       state.user = action?.payload;
-    },
+    });
   },
 });
 
