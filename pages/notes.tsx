@@ -33,6 +33,7 @@ import {
   putNotes,
 } from "../state/notes/thunks";
 import { NewNotes, Notes as _Notes } from "../gen/models";
+import { router } from "next/client";
 
 // types
 enum LocalStates {
@@ -92,10 +93,7 @@ export default function Notes() {
   const [state, setState] = useState<LocalStates>(LocalStates.loading);
   const [activeTab, setActiveTab] = useState<EditorTabs>("write");
   const [currentNote, setCurrentNote] = useState<Partial<_Notes>>({});
-
-  const [content, setContent] = useState<Partial<NewNotes>>(
-    INITIAL_CONTENT
-  );
+  const [content, setContent] = useState<Partial<NewNotes>>(INITIAL_CONTENT);
 
   // hooks
   const dispatch = useAppDispatch();
@@ -306,20 +304,8 @@ export default function Notes() {
   function handleLogout() {
     dispatch(signOutUser());
     sessionStorage?.removeItem?.(TOKEN_STORAGE_KEY);
+    router.push("/");
   }
-
-  // useEffect
-  // useEffect(() => {
-  //   if (!Object.keys(currentNote).length && state !== LocalStates.creating) {
-  //     console.count("FX executing");
-  //
-  //     setState(LocalStates.loading);
-  //
-  //     notes?.length && setCurrentNote([...notes]?.shift());
-  //
-  //     setState(LocalStates.reading);
-  //   }
-  // }, [notes]);
 
   // useEffect
   // useEffect(() => {
@@ -340,7 +326,10 @@ export default function Notes() {
         authorId: user?.id,
         token: _token,
       })
-    ).then(() => setState(LocalStates.reading));
+    ).then(({ payload }) => {
+      setCurrentNote((payload as _Notes[])?.[0] ?? {});
+      setState(LocalStates.reading);
+    });
   }, []);
 
   return (
@@ -366,7 +355,7 @@ export default function Notes() {
           {/*<Input />*/}
 
           <List>
-            {notes?.map?.((note, i: number) => (
+            {notes?.map?.((note: _Notes, i: number) => (
               <ListItem
                 key={i}
                 className={classnames({
