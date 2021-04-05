@@ -4,9 +4,9 @@ PageHeader
 
 import React from "react";
 import styled from "styled-components";
-import {Heading} from "../Heading";
-import {ActionDef} from "../../types";
-import {SecondaryButton} from "../Button";
+import { Heading } from "../Heading";
+import { ActionDef } from "../../types";
+import { SecondaryButton } from "../Button";
 
 type OwnProps = {
   title: string;
@@ -60,12 +60,12 @@ const _PageHeader: React.FC<OwnProps> = ({
 
 const PageHeader = styled(_PageHeader)`
   border-bottom: ${({ theme }) => "1px solid " + theme.stroke01};
+  padding: 0.8rem 0;
 
   .page-header-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px;
     margin-top: -2px;
   }
 
