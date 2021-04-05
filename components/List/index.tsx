@@ -28,5 +28,6 @@ export const ListItem = styled.li.attrs({ className: "ListItem" })`
 
   &.selected {
     border-left: 4px solid rebeccapurple;
+    background-color: white;
   }
 `;

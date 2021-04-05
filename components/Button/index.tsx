@@ -60,3 +60,14 @@ export const SecondaryButton = styled(Button)`
   border: 2px solid ${props => props.color ?? props.theme.accent01};
   color: ${props => props.color ?? props.theme.accent01};
 `;
+
+// NakedButton
+export const NakedButton = styled(SecondaryButton)`
+  border: none;
+  justify-content: center;
+
+  > .material-icons {
+    margin-right: ${rem(8)};
+    font-size: inherit;
+  }
+`;
