@@ -92,9 +92,7 @@ export default function Notes() {
   const [state, setState] = useState<LocalStates>(LocalStates.loading);
   const [activeTab, setActiveTab] = useState<EditorTabs>("write");
 
-  const [currentNote, setCurrentNote] = useState<
-    _Notes | Record<string, string | number>
-  >({});
+  const [currentNote, setCurrentNote] = useState<_Notes | {}>({});
 
   const [content, setContent] = useState<Partial<_Notes> | Partial<NewNotes>>(
     INITIAL_CONTENT
@@ -172,12 +170,13 @@ export default function Notes() {
     return async function (e) {
       e.preventDefault(); // TODO do we need this?
 
+      const id = note?.id;
+
       dispatch(
         putNotes({
-          id: note.id,
+          id,
           newContent: {
             ...content,
-            // author: user?._id,
           },
           token,
         })
@@ -196,7 +195,7 @@ export default function Notes() {
 
     dispatch(
       deleteNotes({
-        id: note.id,
+        id,
         token,
       })
     ).then(() => {
