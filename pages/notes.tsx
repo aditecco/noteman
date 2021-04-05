@@ -90,14 +90,14 @@ export default function Notes() {
   };
 
   // state
-  const [state, setState] = useState<LocalStates>(LocalStates.loading);
+  const [state, setState] = useState<LocalStates>(LocalStates.reading);
   const [activeTab, setActiveTab] = useState<EditorTabs>("write");
   const [currentNote, setCurrentNote] = useState<Partial<_Notes>>({});
   const [content, setContent] = useState<Partial<NewNotes>>(INITIAL_CONTENT);
 
   // hooks
   const dispatch = useAppDispatch();
-  const { notes } = useAppSelector(state => state.notes);
+  const { notes, loading: loadingNotes } = useAppSelector(state => state.notes);
   const { user, jwt: token } = useAppSelector(state => state.auth);
   const themeContext = useContext(ThemeContext);
 
@@ -229,36 +229,6 @@ export default function Notes() {
    */
   function renderBody(state: LocalStates): ReactNode {
     switch (state) {
-      // idle
-      case LocalStates.reading:
-        // TODO blank slate
-        return !notes?.length ? (
-          <span>No notes!</span>
-        ) : (
-          <Note
-            note={currentNote}
-            actions={[
-              {
-                name: "Edit",
-                icon: "edit",
-                callback: () => {
-                  setContent({
-                    title: currentNote.title,
-                    body: currentNote.body,
-                  });
-
-                  setState(LocalStates.updating);
-                },
-              },
-              {
-                name: "Delete",
-                icon: "remove_circle_outline",
-                callback: () => handleDelete(currentNote),
-              },
-            ]}
-          />
-        );
-
       // creating
       case LocalStates.creating:
         return (
@@ -289,14 +259,36 @@ export default function Notes() {
           </ContentEditor>
         );
 
-      // error
-      case LocalStates.error:
-        return "☢️ ERROR!";
-
-      // default
-      case LocalStates.loading:
+      // idle & default
+      case LocalStates.reading:
       default:
-        return <Spinner />;
+        // TODO blank slate
+        return !notes?.length ? (
+          <span>No notes!</span>
+        ) : (
+          <Note
+            note={currentNote}
+            actions={[
+              {
+                name: "Edit",
+                icon: "edit",
+                callback: () => {
+                  setContent({
+                    title: currentNote.title,
+                    body: currentNote.body,
+                  });
+
+                  setState(LocalStates.updating);
+                },
+              },
+              {
+                name: "Delete",
+                icon: "remove_circle_outline",
+                callback: () => handleDelete(currentNote),
+              },
+            ]}
+          />
+        );
     }
   }
 
@@ -373,7 +365,11 @@ export default function Notes() {
           </List>
         </Sidebar>
 
-        <ContentArea>{renderBody(state)}</ContentArea>
+        {loadingNotes === "pending" ? (
+          <Spinner />
+        ) : (
+          <ContentArea>{renderBody(state)}</ContentArea>
+        )}
       </Grid>
 
       <Footer>

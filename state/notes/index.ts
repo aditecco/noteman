@@ -25,12 +25,27 @@ export const notesSlice = createSlice({
     // TODO pending & error cases
 
     /**
+     * getNotes.pending
+     */
+    builder.addCase(getNotes.pending, state => {
+      state.loading = "pending";
+    });
+
+    /**
      * getNotes
      * @param state
      * @param action
      */
     builder.addCase(getNotes.fulfilled, function (state, action) {
       state.notes = action?.payload ?? [];
+      state.loading = "succeeded";
+    });
+
+    /**
+     * postNotes.pending
+     */
+    builder.addCase(postNotes.pending, state => {
+      state.loading = "pending";
     });
 
     /**
@@ -40,6 +55,14 @@ export const notesSlice = createSlice({
      */
     builder.addCase(postNotes.fulfilled, function (state, action) {
       state.notes.push(action?.payload);
+      state.loading = "succeeded";
+    });
+
+    /**
+     * putNotes.pending
+     */
+    builder.addCase(putNotes.pending, state => {
+      state.loading = "pending";
     });
 
     /**
@@ -52,6 +75,14 @@ export const notesSlice = createSlice({
       const which = state.notes.findIndex(note => note.id === modified?.id);
 
       state.notes[which] = modified;
+      state.loading = "succeeded";
+    });
+
+    /**
+     * deleteNotes.pending
+     */
+    builder.addCase(deleteNotes.pending, state => {
+      state.loading = "pending";
     });
 
     /**
@@ -64,6 +95,7 @@ export const notesSlice = createSlice({
       const which = state.notes.findIndex(note => note.id === deleted?.id);
 
       state.notes.splice(which, 1);
+      state.loading = "succeeded";
     });
   },
 });
