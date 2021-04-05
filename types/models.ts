@@ -22,5 +22,7 @@ export type InferredAuthLocalPostResponse = {
  */
 export type InferredAuthLocalRegisterPostResponse = InferredAuthLocalPostResponse;
 
-// models re-export
+/**
+ * models re-export
+ */
 export * from "../gen/models";
