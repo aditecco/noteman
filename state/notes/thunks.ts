@@ -70,12 +70,8 @@ export const deleteNotes = createAsyncThunk(
   async (params: { id: string; token: string }) => {
     const { id, token } = params;
 
-    return (await Gateway.deleteData(
-      `/notes/${id}`,
-      {},
-      {
-        headers: { Authorization: "Bearer " + token },
-      }
-    )) as Notes;
+    return (await Gateway.deleteData(`/notes/${id}`, {
+      headers: { Authorization: "Bearer " + token },
+    })) as Notes;
   }
 );
