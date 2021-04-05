@@ -2,15 +2,11 @@
 Store types
 --------------------------------- */
 
-import {
-  NewUsersPermissionsUser,
-  Notes,
-  UsersPermissionsUser,
-} from "../gen/models";
+import { Notes, UsersPermissionsUser } from "../gen/models";
 
 export type AuthState = {
   jwt: string;
-  user: UsersPermissionsUser | NewUsersPermissionsUser;
+  user: UsersPermissionsUser;
 };
 
 export type NotesState = {

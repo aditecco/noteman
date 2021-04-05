@@ -91,7 +91,6 @@ export default function Notes() {
   // state
   const [state, setState] = useState<LocalStates>(LocalStates.loading);
   const [activeTab, setActiveTab] = useState<EditorTabs>("write");
-  const [_notes, _setNotes] = useState([]);
 
   const [currentNote, setCurrentNote] = useState<
     _Notes | Record<string, string | number>
@@ -150,7 +149,7 @@ export default function Notes() {
       postNotes({
         note: {
           ...content,
-          author: user?._id,
+          author: user?.id,
         },
         token,
       })
