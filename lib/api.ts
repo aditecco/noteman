@@ -4,7 +4,7 @@ APIGateway
 
 import axios, { AxiosResponse } from "axios";
 import { ModelError } from "../gen/models";
-import { log } from "./utils";
+import { log } from "../util";
 
 export default class APIGateway {
   private client: any;

@@ -3,7 +3,7 @@ Button
 --------------------------------- */
 
 import styled from "styled-components";
-import {rem} from '../../util/utils'
+import { rem } from "../../util";
 
 type SizeVariants = "small" | "medium";
 

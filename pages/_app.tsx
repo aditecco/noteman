@@ -12,7 +12,7 @@ import "fontsource-ibm-plex-sans/400-normal.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { store } from "../state/store";
 import { Provider } from "react-redux";
-import APIGateway from "../util/api";
+import APIGateway from "../lib/api";
 
 // Gateway
 export const Gateway = new APIGateway();

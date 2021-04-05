@@ -41,6 +41,8 @@ const _Note: React.FC<OwnProps> = ({
 };
 
 export const Note = styled(_Note)`
+  // NOTE
+  // these styles need to be synced with those in components/ContentEditor/index.tsx
   max-width: 800px;
   margin: 0 auto;
   min-height: 100%;
