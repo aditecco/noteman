@@ -13,6 +13,7 @@ import { useAppDispatch } from "../hooks";
 import AuthForm, { FieldConfig } from "../components/AuthForm";
 import { signInUser, signUpUser } from "../state/auth/thunks";
 import useAuthToken from "../hooks/useAuthToken";
+import { Spinner } from "../components/Spinner/Spinner";
 
 export default function Index(): ReactElement | null {
   // state
@@ -21,7 +22,7 @@ export default function Index(): ReactElement | null {
 
   // hooks
   const dispatch = useAppDispatch();
-  useAuthToken(); // will just run the effect
+  const { loading } = useAuthToken();
 
   // ...
   const FIELDS: FieldConfig[] = [
@@ -90,35 +91,39 @@ export default function Index(): ReactElement | null {
     <Layout marginTop={90}>
       <Header />
 
-      <Container>
-        <Heading align={"center"}>Login or create an account</Heading>
-        <TabSwitcher
-          tabs={[
-            {
-              name: "Login",
-              content: (
-                <AuthForm
-                  fields={FIELDS}
-                  handleChange={handleChange}
-                  submitLabel={"Login"}
-                  handleSubmit={handleSubmit("login")}
-                />
-              ),
-            },
-            {
-              name: "Signup",
-              content: (
-                <AuthForm
-                  fields={FIELDS}
-                  handleChange={handleChange}
-                  submitLabel={"Signup"}
-                  handleSubmit={handleSubmit("signup")}
-                />
-              ),
-            },
-          ]}
-        />
-      </Container>
+      {loading === "pending" ? (
+        <Spinner />
+      ) : (
+        <Container>
+          <Heading align={"center"}>Login or create an account</Heading>
+          <TabSwitcher
+            tabs={[
+              {
+                name: "Login",
+                content: (
+                  <AuthForm
+                    fields={FIELDS}
+                    handleChange={handleChange}
+                    submitLabel={"Login"}
+                    handleSubmit={handleSubmit("login")}
+                  />
+                ),
+              },
+              {
+                name: "Signup",
+                content: (
+                  <AuthForm
+                    fields={FIELDS}
+                    handleChange={handleChange}
+                    submitLabel={"Signup"}
+                    handleSubmit={handleSubmit("signup")}
+                  />
+                ),
+              },
+            ]}
+          />
+        </Container>
+      )}
     </Layout>
   );
 }
