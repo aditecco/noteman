@@ -65,6 +65,7 @@ export const SecondaryButton = styled(Button)`
 export const NakedButton = styled(SecondaryButton)`
   border: none;
   justify-content: center;
+  min-width: 0;
 
   > .material-icons {
     margin-right: ${rem(8)};

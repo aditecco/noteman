@@ -327,11 +327,7 @@ export default function Notes() {
   return (
     <Layout marginTop={60}>
       <Header>
-        <SecondaryButton
-          type={"button"}
-          variant={"small"}
-          onClick={handleLogout}
-        >
+        <SecondaryButton type={"button"} onClick={handleLogout}>
           Logout {user?.username || user?.email}
         </SecondaryButton>
       </Header>
