@@ -26,12 +26,12 @@ export default function useAuthToken() {
       }
 
       dispatch(getUser(token))
-        .then(({ payload: user }) =>
+        .then(({ payload: user }) => {
           sessionStorage?.setItem?.(
             USER_ID_STORAGE_KEY,
             (user as UsersPermissionsUser)?.id
-          )
-        )
+          );
+        })
         .then(() => router.push("/notes"));
     }
   }, [softToken]);
