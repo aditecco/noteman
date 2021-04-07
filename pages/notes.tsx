@@ -23,7 +23,7 @@ import { ContentEditor } from "../components/ContentEditor";
 import { Spinner } from "../components/Spinner/Spinner";
 import { Note } from "../components/Note";
 import Header from "../components/Header";
-import { TOKEN_STORAGE_KEY } from "../constants";
+import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { signOutUser } from "../state/auth";
 import {
@@ -34,6 +34,7 @@ import {
 } from "../state/notes/thunks";
 import { NewNotes, Notes as _Notes } from "../gen/models";
 import { router } from "next/client";
+import { destroyNotes } from "../state/notes";
 
 // types
 enum LocalStates {
@@ -292,21 +293,16 @@ export default function Notes() {
     }
   }
 
-  //
+  // handleLogout
   function handleLogout() {
     dispatch(signOutUser());
+    dispatch(destroyNotes());
+
     sessionStorage?.removeItem?.(TOKEN_STORAGE_KEY);
+    sessionStorage?.removeItem?.(USER_STORAGE_KEY);
+
     router.push("/");
   }
-
-  // useEffect
-  // useEffect(() => {
-  //   const JWT = sessionStorage?.getItem?.(TOKEN_STORAGE_KEY);
-  //
-  //   if (!user || !JWT) {
-  //     router.push("/");
-  //   }
-  // }, [user]);
 
   useEffect(() => {
     // TODO try to centralize
