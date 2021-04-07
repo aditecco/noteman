@@ -3,7 +3,7 @@ UseAuthToken
 --------------------------------- */
 
 import { useEffect } from "react";
-import { TOKEN_STORAGE_KEY, USER_ID_STORAGE_KEY } from "../constants";
+import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from "../constants";
 import { getUser } from "../state/auth/thunks";
 import { useAppDispatch, useAppSelector } from "./redux";
 import { useRouter } from "next/router";
@@ -28,8 +28,8 @@ export default function useAuthToken() {
       dispatch(getUser(token))
         .then(({ payload: user }) => {
           sessionStorage?.setItem?.(
-            USER_ID_STORAGE_KEY,
-            (user as UsersPermissionsUser)?.id
+            USER_STORAGE_KEY,
+            JSON.stringify(user as UsersPermissionsUser)
           );
         })
         .then(() => router.push("/notes"));
