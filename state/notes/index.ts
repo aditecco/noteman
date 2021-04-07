@@ -16,7 +16,11 @@ export const notesSlice = createSlice({
   /**
    * reducers
    */
-  reducers: {},
+  reducers: {
+    destroyNotes() {
+      return initialState;
+    },
+  },
 
   /**
    * extraReducers
@@ -100,6 +104,6 @@ export const notesSlice = createSlice({
   },
 });
 
-// export const {  } = notesSlice.actions;
+export const { destroyNotes } = notesSlice.actions;
 
 export default notesSlice.reducer;
