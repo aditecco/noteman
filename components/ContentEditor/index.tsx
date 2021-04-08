@@ -5,10 +5,10 @@ ContentEditor
 import React from "react";
 import styled from "styled-components";
 import PageHeader from "../PageHeader";
-import {INote} from "../../types";
+import { Notes } from "../../types";
 
 type OwnProps = {
-  note?: INote | Record<string, unknown>;
+  note?: Notes | Record<string, unknown>;
   createMode?: boolean;
   className?: string;
 };
@@ -31,10 +31,10 @@ const _ContentEditor: React.FC<OwnProps> = ({
 };
 
 export const ContentEditor = styled(_ContentEditor)`
+  // NOTE
+  // these styles need to be synced with those in components/Note/index.tsx
   max-width: 800px;
   margin: 0 auto;
   min-height: 100%;
-  border-radius: ${({ theme }) => theme.borderRadius + " px"};
-  background-color: white;
-  box-shadow: 0 2px 30px 10px #00000014;
+  color: #444;
 `;

@@ -3,7 +3,7 @@ List, ListItem
 --------------------------------- */
 
 import styled from "styled-components";
-import {rem} from "../../util/utils";
+import { rem } from "../../util";
 
 // List
 export const List = styled.ul.attrs({ className: "List" })`
@@ -28,5 +28,6 @@ export const ListItem = styled.li.attrs({ className: "ListItem" })`
 
   &.selected {
     border-left: 4px solid rebeccapurple;
+    background-color: white;
   }
 `;

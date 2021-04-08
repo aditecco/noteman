@@ -3,112 +3,127 @@ Index (Auth)
 --------------------------------- */
 
 import * as React from "react";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import { Heading } from "../components/Heading";
-import { Form } from "../components/Form";
-import { Button } from "../components/Button";
 import { Container } from "../components/Container";
-import { Input } from "../components/Input";
 import TabSwitcher from "../components/TabSwitcher";
 import { Layout } from "../components/Layout";
 import Header from "../components/Header";
-import axios from "axios";
-import { useRouter } from "next/router";
-
-// const API = new UsersPermissionsUserApi();
+import { useAppDispatch } from "../hooks";
+import AuthForm, { FieldConfig } from "../components/AuthForm";
+import { signInUser, signUpUser } from "../state/auth/thunks";
+import useAuthToken from "../hooks/useAuthToken";
+import { Spinner } from "../components/Spinner/Spinner";
 
 export default function Index(): ReactElement | null {
-  const [identifier, setUsername] = useState<string>("");
+  // state
+  const [identifier, setIdentifier] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [token, setToken] = useState<string | null>(null);
-  const router = useRouter();
+
+  // hooks
+  const dispatch = useAppDispatch();
+  const { loading } = useAuthToken();
+
+  // ...
+  const FIELDS: FieldConfig[] = [
+    {
+      value: identifier,
+      placeholder: "email@example.com or username",
+      name: "identifier",
+      // type: "email",
+    },
+    {
+      value: password,
+      placeholder: "password",
+      name: "password",
+      type: "password",
+    },
+  ];
 
   // handleChange
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     if (e?.target?.name === "identifier") {
-      setUsername(e.target.value);
-    } else if (e?.target?.name === "password") {
+      setIdentifier(e.target.value);
+    }
+
+    //
+    else if (e?.target?.name === "password") {
       setPassword(e.target.value);
-    } else return;
+    }
+
+    //
+    else return;
+  }
+
+  // resetFields
+  function resetFields() {
+    setIdentifier("");
+    setPassword("");
   }
 
   // handleSubmit
-  async function handleSubmit(e: React.FormEvent) {
-    e?.preventDefault?.();
+  function handleSubmit(intent: string) {
+    return async function (e: React.FormEvent) {
+      e?.preventDefault?.();
 
-    // TODO display an error msg
-    if (!identifier || !password) return;
+      // TODO display an error msg
+      if (!identifier || !password) return;
 
-    axios
-      .post("http://localhost:1337/auth/local", {
-        identifier,
-        password,
-      })
-      .then(({ data }) => {
-        if (window) {
-          sessionStorage?.setItem?.("JWT", data?.jwt);
-        }
+      const creds = { identifier, password };
 
-        setToken(data?.jwt);
-      })
-      .catch(err => console.error(err))
-      .finally(() => {
-        setUsername("");
-        setPassword("");
-      });
+      // dispatch login action
+      if (intent === "login") {
+        await dispatch(signInUser(creds));
+      }
+
+      // dispatch signup action
+      else if (intent === "signup") {
+        await dispatch(signUpUser(creds));
+      }
+
+      // TODO show a success notif
+
+      resetFields();
+    };
   }
 
-  useEffect(() => {
-    const JWT = sessionStorage?.getItem?.("JWT");
-
-    JWT && setToken(JWT);
-  }, []);
-
-  useEffect(() => {
-    token && router.push("/notes");
-  }, [token]);
-
   return (
-    <Layout marginTop={60}>
+    <Layout marginTop={90}>
       <Header />
-      <Container>
-        <Heading align={"center"}>Auth</Heading>
 
-        <Form onSubmit={handleSubmit}>
+      {loading === "pending" ? (
+        <Spinner />
+      ) : (
+        <Container>
+          <Heading align={"center"}>Login or create an account</Heading>
           <TabSwitcher
             tabs={[
               {
                 name: "Login",
                 content: (
-                  <>
-                    <Input
-                      type={"text"}
-                      name={"identifier"}
-                      placeholder={"Username"}
-                      value={identifier}
-                      onChange={handleChange}
-                    />
-
-                    <Input
-                      type={"password"}
-                      name={"password"}
-                      placeholder={"Password"}
-                      value={password}
-                      onChange={handleChange}
-                    />
-
-                    <Button type={"submit"}>Login</Button>
-                  </>
+                  <AuthForm
+                    fields={FIELDS}
+                    handleChange={handleChange}
+                    submitLabel={"Login"}
+                    handleSubmit={handleSubmit("login")}
+                  />
                 ),
               },
               {
                 name: "Signup",
-                content: "signup",
+                content: (
+                  <AuthForm
+                    fields={FIELDS}
+                    handleChange={handleChange}
+                    submitLabel={"Signup"}
+                    handleSubmit={handleSubmit("signup")}
+                  />
+                ),
               },
             ]}
           />
-        </Form>
-      </Container>
+        </Container>
+      )}
     </Layout>
   );
 }

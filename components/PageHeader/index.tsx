@@ -4,9 +4,10 @@ PageHeader
 
 import React from "react";
 import styled from "styled-components";
-import {Heading} from "../Heading";
-import {ActionDef} from "../../types";
-import {SecondaryButton} from "../Button";
+import { Heading } from "../Heading";
+import { ActionDef } from "../../types";
+import { NakedButton, SecondaryButton } from "../Button";
+import { rem } from "../../util";
 
 type OwnProps = {
   title: string;
@@ -38,7 +39,7 @@ const _PageHeader: React.FC<OwnProps> = ({
 
         <div className="page-header-toolbar">
           {actions?.map((action, i) => (
-            <SecondaryButton
+            <NakedButton
               variant={"small"}
               onClick={action?.callback}
               key={"action_" + i}
@@ -50,7 +51,7 @@ const _PageHeader: React.FC<OwnProps> = ({
 
                 {action?.name}
               </>
-            </SecondaryButton>
+            </NakedButton>
           ))}
         </div>
       </div>
@@ -60,18 +61,20 @@ const _PageHeader: React.FC<OwnProps> = ({
 
 const PageHeader = styled(_PageHeader)`
   border-bottom: ${({ theme }) => "1px solid " + theme.stroke01};
+  padding: 0.8rem 0;
 
   .page-header-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px;
     margin-top: -2px;
   }
 
   .page-header-meta {
     .page-header-subheading {
       color: ${({ theme }) => theme.alternateFontColorDark01};
+      font-size: ${rem(14)};
+      text-transform: uppercase;
     }
   }
 

@@ -2,7 +2,7 @@
 
 ### It should:
 
-- [ ] Offer the ability to create an account
+- [x] Offer the ability to create an account
 - [ ] Provide an account profile page
 - [ ] Provide an account settings page
 - [ ] When creating a note, require title & content (form engine/validation)
@@ -21,6 +21,9 @@
 - [x] When clicking "create note", replace the main content area w/ a note creation form
 - [x] Allow note creation in markdown
 - [x] Offer markdown preview
+- [ ] Offer the ability to change themes (theming system)
+
+---
 
 ### Implementation:
 
@@ -32,11 +35,34 @@
 - [x] add a CSS reset
 - [x] choose a CSS-in-JS lib
 - [x] add fonts (?)
+- [ ] refine styles
+- [ ] redesign theme based on a standardized format
+- [x] Loading states for async ops
+- [ ] Error states
+- [ ] implement global token in API handler
+- [ ] fine-tune methods in API handler
+- [ ] implement `unwrapResult` (https://redux-toolkit.js.org/api/createAsyncThunk#unwrapping-result-actions)
+
+---
+
+### Fixes
+
+- [x] Selected note on /notes load
+- [ ] Note update on PUT /notes
+- [ ] TS fixes
+- [x] extraReducers TS fixes (https://redux-toolkit.js.org/usage/usage-with-typescript#type-safety-with-extrareducers)
+- [x] remove Meteor residual stuff
+- [ ] user/token loop in index
+- [ ] make styled CSS values dynamic with theme
+
+---
+
+### Optims
+
+- [ ] Move components out of own folders
+
+---
 
 ### Ops
 
 - [ ] deploy
-
-### Features
-
-- Theming system

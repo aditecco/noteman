@@ -3,7 +3,7 @@ Heading
 --------------------------------- */
 
 import styled from "styled-components";
-import {rem} from "../../util/utils";
+import { rem } from "../../util";
 
 type OwnProps = {
   thinMargin?: boolean;
@@ -16,6 +16,6 @@ export const Heading = styled.h3.attrs({ className: "Heading" })<OwnProps>`
   margin: ${props => props.thinMargin && "6px 0"};
   text-transform: capitalize;
   text-align: ${props => props.align || "left"};
-  font-family: "Karla", sans-serif;
+  font-family: "IBM Plex Sans Light", sans-serif;
   font-weight: normal;
 `;

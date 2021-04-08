@@ -3,7 +3,7 @@ Button
 --------------------------------- */
 
 import styled from "styled-components";
-import {rem} from '../../util/utils'
+import { rem } from "../../util";
 
 type SizeVariants = "small" | "medium";
 
@@ -22,7 +22,7 @@ export const Button = styled.button.attrs({
   align-items: center;
   outline: none;
   border: none;
-  padding: ${props => (props.variant !== "small" ? "12px 6px" : "8px 6px")};
+  padding: ${props => (props.variant !== "small" ? "10px 14px" : "6px 8px")};
   border-radius: 4px;
   color: ${props => props.color || props.theme.alternateFontColorLight01};
   background-color: ${props => props.accent || props.theme.accent01};
@@ -59,4 +59,16 @@ export const SecondaryButton = styled(Button)`
   background-color: transparent;
   border: 2px solid ${props => props.color ?? props.theme.accent01};
   color: ${props => props.color ?? props.theme.accent01};
+`;
+
+// NakedButton
+export const NakedButton = styled(SecondaryButton)`
+  border: none;
+  justify-content: center;
+  min-width: ${rem(80)};
+
+  > .material-icons {
+    margin-right: ${rem(6)};
+    font-size: inherit;
+  }
 `;

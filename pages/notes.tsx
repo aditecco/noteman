@@ -18,14 +18,23 @@ import ReactMde, { ReactMdeProps } from "react-mde";
 import { Input } from "../components/Input";
 import * as ReactMarkdown from "react-markdown";
 import { Form } from "../components/Form";
-import { INote, UserGeneratedNoteContent } from "../types";
 import { ThemeContext } from "styled-components";
 import { ContentEditor } from "../components/ContentEditor";
 import { Spinner } from "../components/Spinner/Spinner";
 import { Note } from "../components/Note";
 import Header from "../components/Header";
-import axios from "axios";
-import { log } from "../util/utils";
+import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from "../constants";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { signOutUser } from "../state/auth";
+import {
+  deleteNotes,
+  getNotes,
+  postNotes,
+  putNotes,
+} from "../state/notes/thunks";
+import { NewNotes, Notes as _Notes } from "../gen/models";
+import { router } from "next/client";
+import { destroyNotes } from "../state/notes";
 
 // types
 enum LocalStates {
@@ -47,7 +56,7 @@ const CancelButton: React.FC<{ handler: () => void }> = ({ handler }) => (
 
 // _Form
 const _Form: React.FC<{
-  values: UserGeneratedNoteContent;
+  values;
   changeHandler: (item: string) => (e: React.ChangeEvent | string) => void;
   tabHandler: {
     selectedTab: EditorTabs;
@@ -75,40 +84,23 @@ const _Form: React.FC<{
 );
 
 // Notes
-export default function Notes({ notes }) {
-  const INITIAL_CONTENT: UserGeneratedNoteContent = { title: "", body: "" };
+export default function Notes() {
+  const INITIAL_CONTENT: Partial<NewNotes> = {
+    title: "",
+    body: "",
+  };
 
   // state
-  const [state, setState] = useState<LocalStates>(LocalStates.loading);
-  const [currentNote, setCurrentNote] = useState<
-    INote | Record<string, string | number>
-  >({});
-  const [content, setContent] = useState<UserGeneratedNoteContent>(
-    INITIAL_CONTENT
-  );
+  const [state, setState] = useState<LocalStates>(LocalStates.reading);
   const [activeTab, setActiveTab] = useState<EditorTabs>("write");
-  const [_notes, _setNotes] = useState([]);
+  const [currentNote, setCurrentNote] = useState<Partial<_Notes>>({});
+  const [content, setContent] = useState<Partial<NewNotes>>(INITIAL_CONTENT);
 
-  // theme
+  // hooks
+  const dispatch = useAppDispatch();
+  const { notes, loading: loadingNotes } = useAppSelector(state => state.notes);
+  const { user, jwt: token } = useAppSelector(state => state.auth);
   const themeContext = useContext(ThemeContext);
-
-  // TODO TMP
-  const user = { username: "xyz" };
-
-  /**
-   * fetchNotes
-   */
-  async function fetchNotes() {
-    try {
-      const request = await fetch("/api/notes/");
-
-      const notes = await request.json();
-
-      _setNotes(notes);
-    } catch (e) {
-      console.error(e);
-    }
-  }
 
   // resetForm
   function resetForm() {
@@ -149,29 +141,21 @@ export default function Notes({ notes }) {
   async function handleSubmit(e: React.MouseEvent): Promise<undefined | void> {
     e.preventDefault();
 
-    try {
-      const id = await fetch("/api/notes/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
-      });
-
-      //
-      fetchNotes();
-
-      // TODO fix this
-      const newNote = notes.find(note => note?._id === id);
-
-      handleCancel();
-      setCurrentNote(newNote ?? [...notes].shift());
-    } catch (err) {
-      // TODO display an error message
+    dispatch(
+      postNotes({
+        note: {
+          ...content,
+          author: user?.id,
+        },
+        token,
+      })
+    ).then(fulfilledAction => {
+      const { payload: newNote } = fulfilledAction;
 
       handleCancel();
 
-      console.error(err);
-      throw err;
-    }
+      setCurrentNote((newNote as _Notes) ?? [...notes].shift());
+    });
   }
 
   /**
@@ -179,27 +163,24 @@ export default function Notes({ notes }) {
    * @param note
    */
   function handleUpdate(
-    note: INote
+    note: _Notes
   ): undefined | ((e: React.MouseEvent) => void) {
     return async function (e) {
       e.preventDefault(); // TODO do we need this?
 
-      try {
-        await fetch("/api/notes/", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ args: [note?._id, content] }),
-        });
+      const id = note?.id;
 
+      dispatch(
+        putNotes({
+          id,
+          newContent: {
+            ...content,
+          },
+          token,
+        })
+      ).then(() => {
         handleCancel();
-      } catch (err) {
-        // TODO display an error message
-
-        handleCancel();
-
-        console.error(err.stack);
-        throw err;
-      }
+      });
     };
   }
 
@@ -207,37 +188,30 @@ export default function Notes({ notes }) {
    * handleDelete
    * @param note
    */
-  async function handleDelete(note: INote): Promise<void | undefined> {
-    const id = note?._id;
+  async function handleDelete(note: _Notes): Promise<void | undefined> {
+    const id = note?.id;
 
-    try {
-      await fetch("/api/notes/", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
-      });
-
-      // TODO show a confirmation
-      const i = notes.findIndex(note => note?._id === id);
+    dispatch(
+      deleteNotes({
+        id,
+        token,
+      })
+    ).then(() => {
+      const i = notes.findIndex(note => note?.id === id);
 
       if (i === 0) {
         setCurrentNote(notes[i + 1] ?? [...notes].shift());
       } else {
         setCurrentNote(notes[i - 1] ?? [...notes].shift());
       }
-    } catch (err) {
-      // TODO display an error message
-
-      console.error(err.stack);
-      throw err;
-    }
+    });
   }
 
   /**
    * handleNoteSelection
    * @param note
    */
-  function handleNoteSelection(note: INote): () => void {
+  function handleNoteSelection(note: _Notes): () => void {
     return function () {
       setCurrentNote(note);
 
@@ -256,36 +230,6 @@ export default function Notes({ notes }) {
    */
   function renderBody(state: LocalStates): ReactNode {
     switch (state) {
-      // idle
-      case LocalStates.reading:
-        // TODO blank slate
-        return !notes?.length ? (
-          <span>No notes!</span>
-        ) : (
-          <Note
-            note={currentNote}
-            actions={[
-              {
-                name: "Edit",
-                icon: "edit",
-                callback: () => {
-                  setContent({
-                    title: currentNote.title,
-                    body: currentNote.body,
-                  });
-
-                  setState(LocalStates.updating);
-                },
-              },
-              {
-                name: "Delete",
-                icon: "remove_circle_outline",
-                callback: () => handleDelete(currentNote),
-              },
-            ]}
-          />
-        );
-
       // creating
       case LocalStates.creating:
         return (
@@ -316,36 +260,72 @@ export default function Notes({ notes }) {
           </ContentEditor>
         );
 
-      // error
-      case LocalStates.error:
-        return "☢️ ERROR!";
-
-      // default
-      case LocalStates.loading:
+      // idle & default
+      case LocalStates.reading:
       default:
-        return <Spinner />;
+        // TODO blank slate
+        return !notes?.length ? (
+          <span>No notes!</span>
+        ) : (
+          <Note
+            note={currentNote}
+            actions={[
+              {
+                name: "Edit",
+                icon: "edit",
+                callback: () => {
+                  setContent({
+                    title: currentNote.title,
+                    body: currentNote.body,
+                  });
+
+                  setState(LocalStates.updating);
+                },
+              },
+              {
+                name: "Delete",
+                icon: "remove_circle_outline",
+                callback: () => handleDelete(currentNote),
+              },
+            ]}
+          />
+        );
     }
   }
 
-  // useEffect
+  // handleLogout
+  function handleLogout() {
+    dispatch(signOutUser());
+    dispatch(destroyNotes());
+
+    sessionStorage?.removeItem?.(TOKEN_STORAGE_KEY);
+    sessionStorage?.removeItem?.(USER_STORAGE_KEY);
+
+    router.push("/");
+  }
+
   useEffect(() => {
-    if (!Object.keys(currentNote).length && state !== LocalStates.creating) {
-      console.count("FX executing");
+    // TODO try to centralize
+    const JWT = sessionStorage?.getItem?.(TOKEN_STORAGE_KEY);
+    const _token = token ?? JWT;
 
-      setState(LocalStates.loading);
-
-      notes?.length && setCurrentNote([...notes]?.shift());
-
+    dispatch(
+      getNotes({
+        authorId: user?.id,
+        token: _token,
+      })
+    ).then(({ payload }) => {
+      setCurrentNote((payload as _Notes[])?.[0] ?? {});
       setState(LocalStates.reading);
-    }
-  }, [notes]);
+    });
+  }, []);
 
   return (
     <Layout marginTop={60}>
       <Header>
-        <Button type={"button"} variant={"small"} onClick={() => {}}>
-          Logout {user?.username}
-        </Button>
+        <SecondaryButton type={"button"} onClick={handleLogout}>
+          Logout {user?.username || user?.email}
+        </SecondaryButton>
       </Header>
 
       <Grid
@@ -359,17 +339,17 @@ export default function Notes({ notes }) {
           {/*<Input />*/}
 
           <List>
-            {notes?.map?.((note, i: number) => (
+            {notes?.map?.((note: _Notes, i: number) => (
               <ListItem
                 key={i}
                 className={classnames({
-                  selected: note?._id === currentNote?._id,
+                  selected: note?.id === currentNote?.id,
                 })}
               >
                 <Actionable onClick={handleNoteSelection(note)}>
                   <span className={"title"}>{note?.title}</span>
                   <span className={"timestamp"}>
-                    {new Date(note?.timestamp).toLocaleString()}
+                    {new Date(note?.published_at).toLocaleString()}
                   </span>
                 </Actionable>
               </ListItem>
@@ -377,7 +357,11 @@ export default function Notes({ notes }) {
           </List>
         </Sidebar>
 
-        <ContentArea>{renderBody(state)}</ContentArea>
+        {loadingNotes === "pending" ? (
+          <Spinner />
+        ) : (
+          <ContentArea>{renderBody(state)}</ContentArea>
+        )}
       </Grid>
 
       <Footer>
@@ -416,25 +400,23 @@ export default function Notes({ notes }) {
   );
 }
 
-const JWT = typeof window !== "undefined" && sessionStorage?.getItem?.("JWT");
-
 // getServerSideProps
-export async function getServerSideProps() {
-  try {
-    const { data } = await axios.get("http://localhost:1337/notes", {
-      headers: {
-        Authorization: "Bearer " + JWT,
-      },
-    });
-
-    return {
-      props: { notes: data ?? [] },
-    };
-  } catch (err) {
-    console.error(err);
-
-    return {
-      props: { notes: [] },
-    };
-  }
-}
+// export async function getServerSideProps() {
+//   try {
+//     const { data } = await axios.get("http://localhost:1337/notes", {
+//       headers: {
+//         Authorization: "Bearer " + JWT,
+//       },
+//     });
+//
+//     return {
+//       props: { notes: data ?? [] },
+//     };
+//   } catch (err) {
+//     console.error(err);
+//
+//     return {
+//       props: { notes: [] },
+//     };
+//   }
+// }

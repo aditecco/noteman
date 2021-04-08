@@ -24,7 +24,7 @@ export const defaultTheme: DefaultTheme = {
   headingFont: "",
   linearGradient: "",
   navHeight: 60,
-  stroke01: "lightgrey",
+  stroke01: "#ababab",
   subtitleFontSize: 14,
   titleFontSize: 24,
 };

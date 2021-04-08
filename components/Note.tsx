@@ -5,12 +5,12 @@ Note
 import React from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
-import {ActionDef} from "/types";
-import PageHeader from "../PageHeader";
-import {INote} from "../../types";
+import PageHeader from "./PageHeader";
+import { Notes, UsersPermissionsUser } from "../types";
+import { ActionDef } from "../types";
 
 type OwnProps = {
-  note: INote | Record<string, unknown>; // TODO
+  note: Partial<Notes>;
   actions?: ActionDef[];
   className?: string;
 };
@@ -25,7 +25,9 @@ const _Note: React.FC<OwnProps> = ({
     <article className={className}>
       <PageHeader
         title={note?.title}
-        subtitle={"Created on: " + new Date(note?.timestamp).toLocaleString()}
+        subtitle={`@${new Date(note?.published_at).toLocaleString()}, by ${
+          (note?.author as UsersPermissionsUser)?.username
+        }`}
         actions={actions}
       />
 
@@ -37,19 +39,19 @@ const _Note: React.FC<OwnProps> = ({
 };
 
 export const Note = styled(_Note)`
+  // NOTE
+  // these styles need to be synced with those in components/ContentEditor/index.tsx
+  // TODO converge to single component
   max-width: 800px;
   margin: 0 auto;
   min-height: 100%;
-  border-radius: ${({ theme }) => theme.borderRadius + "px"};
-  background-color: white;
-  box-shadow: 0 2px 30px 10px #00000014;
 
   .note-content {
-    padding: 20px 30px 40px;
     line-height: 1.6;
+    color: #555;
 
     & > * {
-      font-family: "IBM Plex Sans", sans-serif;
+      font-family: "Karla", sans-serif;
       font-weight: normal;
     }
   }
