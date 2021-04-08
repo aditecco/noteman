@@ -74,6 +74,7 @@ const PageHeader = styled(_PageHeader)`
     .page-header-subheading {
       color: ${({ theme }) => theme.alternateFontColorDark01};
       font-size: ${rem(14)};
+      text-transform: uppercase;
     }
   }
 

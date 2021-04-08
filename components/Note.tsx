@@ -25,9 +25,7 @@ const _Note: React.FC<OwnProps> = ({
     <article className={className}>
       <PageHeader
         title={note?.title}
-        subtitle={`Created on ${new Date(
-          note?.published_at
-        ).toLocaleString()} by ${
+        subtitle={`@${new Date(note?.published_at).toLocaleString()}, by ${
           (note?.author as UsersPermissionsUser)?.username
         }`}
         actions={actions}
@@ -50,10 +48,10 @@ export const Note = styled(_Note)`
 
   .note-content {
     line-height: 1.6;
-    color: #444;
+    color: #555;
 
     & > * {
-      font-family: "IBM Plex Sans", sans-serif;
+      font-family: "Karla", sans-serif;
       font-weight: normal;
     }
   }

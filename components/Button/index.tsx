@@ -22,7 +22,7 @@ export const Button = styled.button.attrs({
   align-items: center;
   outline: none;
   border: none;
-  padding: ${props => (props.variant !== "small" ? "12px 6px" : "8px 6px")};
+  padding: ${props => (props.variant !== "small" ? "10px 14px" : "6px 8px")};
   border-radius: 4px;
   color: ${props => props.color || props.theme.alternateFontColorLight01};
   background-color: ${props => props.accent || props.theme.accent01};
@@ -65,10 +65,10 @@ export const SecondaryButton = styled(Button)`
 export const NakedButton = styled(SecondaryButton)`
   border: none;
   justify-content: center;
-  min-width: 0;
+  min-width: ${rem(80)};
 
   > .material-icons {
-    margin-right: ${rem(8)};
+    margin-right: ${rem(6)};
     font-size: inherit;
   }
 `;
