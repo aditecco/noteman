@@ -60,7 +60,7 @@ const _PageHeader: React.FC<OwnProps> = ({
 };
 
 const PageHeader = styled(_PageHeader)`
-  border-bottom: ${({ theme }) => "1px dashed " + theme.stroke01};
+  border-bottom: ${({ theme }) => "1px solid " + theme.stroke01};
   padding: 0.8rem 0;
 
   .page-header-inner {
