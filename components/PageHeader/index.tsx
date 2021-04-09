@@ -6,7 +6,7 @@ import React from "react";
 import styled from "styled-components";
 import { Heading } from "../Heading";
 import { ActionDef } from "../../types";
-import { NakedButton, SecondaryButton } from "../Button";
+import { CompactButton, SecondaryButton } from "../Button";
 import { rem } from "../../util";
 
 type OwnProps = {
@@ -39,7 +39,7 @@ const _PageHeader: React.FC<OwnProps> = ({
 
         <div className="page-header-toolbar">
           {actions?.map((action, i) => (
-            <NakedButton
+            <CompactButton
               variant={"small"}
               onClick={action?.callback}
               key={"action_" + i}
@@ -51,7 +51,7 @@ const _PageHeader: React.FC<OwnProps> = ({
 
                 {action?.name}
               </>
-            </NakedButton>
+            </CompactButton>
           ))}
         </div>
       </div>

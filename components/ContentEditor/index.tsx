@@ -36,5 +36,5 @@ export const ContentEditor = styled(_ContentEditor)`
   max-width: 800px;
   margin: 0 auto;
   min-height: 100%;
-  color: #444;
+  color: #5e5e5e;
 `;
