@@ -295,17 +295,6 @@ export default function Notes() {
     }
   }
 
-  // handleLogout
-  function handleLogout() {
-    dispatch(signOutUser());
-    dispatch(destroyNotes());
-
-    sessionStorage?.removeItem?.(TOKEN_STORAGE_KEY);
-    sessionStorage?.removeItem?.(USER_STORAGE_KEY);
-
-    router.push("/");
-  }
-
   useEffect(() => {
     // TODO try to centralize
     const JWT = sessionStorage?.getItem?.(TOKEN_STORAGE_KEY);
