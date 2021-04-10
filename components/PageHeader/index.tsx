@@ -8,6 +8,7 @@ import { Heading } from "../Heading";
 import { ActionDef } from "../../types";
 import { CompactButton, SecondaryButton } from "../Button";
 import { rem } from "../../util";
+import { MaterialIcon } from "../MaterialIcon";
 
 type OwnProps = {
   title: string;
@@ -45,9 +46,7 @@ const _PageHeader: React.FC<OwnProps> = ({
               key={"action_" + i}
             >
               <>
-                {action?.icon && (
-                  <div className="material-icons">{action?.icon}</div>
-                )}
+                {action?.icon && <MaterialIcon>{action.icon}</MaterialIcon>}
 
                 {action?.name}
               </>

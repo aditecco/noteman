@@ -4,6 +4,7 @@ Logo
 
 import React from "react";
 import styled from "styled-components";
+import { MaterialIcon } from "../MaterialIcon";
 
 const LogoContainer = styled.div.attrs({ className: "LogoContainer" })`
   display: flex;
@@ -27,7 +28,7 @@ const LogoContainer = styled.div.attrs({ className: "LogoContainer" })`
 const Logo: React.FC = () => {
   return (
     <LogoContainer>
-      <i className="material-icons">article</i>
+      <MaterialIcon>article</MaterialIcon>
       <span className="logotype">NoteMan</span>
     </LogoContainer>
   );
