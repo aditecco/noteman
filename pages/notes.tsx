@@ -36,6 +36,7 @@ import { NewNotes, Notes as _Notes } from "../gen/models";
 import { router } from "next/client";
 import { destroyNotes } from "../state/notes";
 import { MaterialIcon } from "../components/MaterialIcon";
+import Link from "next/link";
 
 // types
 enum LocalStates {
@@ -324,14 +325,16 @@ export default function Notes() {
   return (
     <Layout marginTop={60}>
       <Header>
-        <SecondaryButton
-          type={"button"}
-          variant={"small"}
-          onClick={handleLogout}
-        >
-          <MaterialIcon>person</MaterialIcon>
-          {user?.username || user?.email}
-        </SecondaryButton>
+        <Link href={`/${user?.username}/profile`}>
+          <SecondaryButton
+            type={"button"}
+            variant={"small"}
+            // onClick={handleLogout}
+          >
+            <MaterialIcon>person</MaterialIcon>
+            {user?.username || user?.email}
+          </SecondaryButton>
+        </Link>
       </Header>
 
       <Grid
