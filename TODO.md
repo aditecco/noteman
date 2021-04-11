@@ -9,7 +9,7 @@
 - [ ] Offer note search functionality
 - [ ] When creating a note, optional fields:
   - [ ] tags
-- [ ] Offer ability to change themes
+- [ ] Offer the ability to change themes (theming system)
 - [x] When creating a note, open it in the main content area right after creation
 - [x] Allow deleting notes
 - [x] Allow editing notes
@@ -21,7 +21,6 @@
 - [x] When clicking "create note", replace the main content area w/ a note creation form
 - [x] Allow note creation in markdown
 - [x] Offer markdown preview
-- [ ] Offer the ability to change themes (theming system)
 
 ---
 

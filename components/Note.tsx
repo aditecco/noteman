@@ -48,7 +48,7 @@ export const Note = styled(_Note)`
 
   .note-content {
     line-height: 1.6;
-    color: #555;
+    color: #5e5e5e;
 
     & > * {
       font-family: "Karla", sans-serif;

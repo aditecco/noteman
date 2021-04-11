@@ -35,6 +35,8 @@ import {
 import { NewNotes, Notes as _Notes } from "../gen/models";
 import { router } from "next/client";
 import { destroyNotes } from "../state/notes";
+import { MaterialIcon } from "../components/MaterialIcon";
+import Link from "next/link";
 
 // types
 enum LocalStates {
@@ -293,17 +295,6 @@ export default function Notes() {
     }
   }
 
-  // handleLogout
-  function handleLogout() {
-    dispatch(signOutUser());
-    dispatch(destroyNotes());
-
-    sessionStorage?.removeItem?.(TOKEN_STORAGE_KEY);
-    sessionStorage?.removeItem?.(USER_STORAGE_KEY);
-
-    router.push("/");
-  }
-
   useEffect(() => {
     // TODO try to centralize
     const JWT = sessionStorage?.getItem?.(TOKEN_STORAGE_KEY);
@@ -323,9 +314,16 @@ export default function Notes() {
   return (
     <Layout marginTop={60}>
       <Header>
-        <SecondaryButton type={"button"} onClick={handleLogout}>
-          Logout {user?.username || user?.email}
-        </SecondaryButton>
+        <Link href={`/${user?.username}/profile`}>
+          <SecondaryButton
+            type={"button"}
+            variant={"small"}
+            // onClick={handleLogout}
+          >
+            <MaterialIcon>person</MaterialIcon>
+            {user?.username || user?.email}
+          </SecondaryButton>
+        </Link>
       </Header>
 
       <Grid

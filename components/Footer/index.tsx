@@ -14,6 +14,7 @@ export const Footer = styled.footer.attrs({ className: "Footer" })`
   align-items: center;
   width: 100%;
   border-top: 1px solid #eee;
+  box-shadow: 0px -2px 12px #0000001c;
 
   & > button:last-child {
     margin-left: 16px;
