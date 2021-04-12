@@ -1,6 +1,6 @@
 # NoteMan
 
-![Noteman](./.preview/ntm-01.png)
+![Noteman](./.preview/ntm-02.png)
 
 NoteMan is a note-taking app & note manager.
 
