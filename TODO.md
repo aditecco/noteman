@@ -2,7 +2,6 @@
 
 ### It should:
 
-- [x] Offer the ability to create an account
 - [ ] Provide an account profile page
 - [ ] Provide an account settings page
 - [ ] When creating a note, require title & content (form engine/validation)
@@ -10,6 +9,7 @@
 - [ ] When creating a note, optional fields:
   - [ ] tags
 - [ ] Offer the ability to change themes (theming system)
+- [x] Offer the ability to create an account
 - [x] When creating a note, open it in the main content area right after creation
 - [x] Allow deleting notes
 - [x] Allow editing notes
@@ -27,32 +27,32 @@
 ### Implementation:
 
 - [ ] clean-up code
-- [x] switch to Meteor publications
 - [ ] add UI animations
+- [ ] refine styles
+- [ ] redesign theme based on a standardized format
+- [ ] Error states
+- [ ] implement global token in API handler
+- [ ] fine-tune methods in API handler
+- [ ] implement `unwrapResult` (https://redux-toolkit.js.org/api/createAsyncThunk#unwrapping-result-actions)
+- [x] switch to Meteor publications
 - [x] switch to Meteor methods
 - [x] add types
 - [x] add a CSS reset
 - [x] choose a CSS-in-JS lib
 - [x] add fonts (?)
-- [ ] refine styles
-- [ ] redesign theme based on a standardized format
 - [x] Loading states for async ops
-- [ ] Error states
-- [ ] implement global token in API handler
-- [ ] fine-tune methods in API handler
-- [ ] implement `unwrapResult` (https://redux-toolkit.js.org/api/createAsyncThunk#unwrapping-result-actions)
 
 ---
 
 ### Fixes
 
-- [x] Selected note on /notes load
 - [ ] Note update on PUT /notes
 - [ ] TS fixes
-- [x] extraReducers TS fixes (https://redux-toolkit.js.org/usage/usage-with-typescript#type-safety-with-extrareducers)
-- [x] remove Meteor residual stuff
 - [ ] user/token loop in index
 - [ ] make styled CSS values dynamic with theme
+- [x] Selected note on /notes load
+- [x] extraReducers TS fixes (https://redux-toolkit.js.org/usage/usage-with-typescript#type-safety-with-extrareducers)
+- [x] remove Meteor residual stuff
 
 ---
 
@@ -64,4 +64,5 @@
 
 ### Ops
 
-- [ ] deploy
+- [x] deploy back-end
+- [ ] fix DB access
