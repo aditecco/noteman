@@ -41,8 +41,6 @@ import Link from "next/link";
 // types
 enum LocalStates {
   creating = "creating",
-  error = "error",
-  loading = "loading",
   reading = "reading",
   updating = "updating",
 }
@@ -100,9 +98,21 @@ export default function Notes() {
 
   // hooks
   const dispatch = useAppDispatch();
-  const { notes, loading: loadingNotes } = useAppSelector(state => state.notes);
-  const { user, jwt: token } = useAppSelector(state => state.auth);
+  const { notes, loading: loadingNotes, error: notesError } = useAppSelector(
+    state => state.notes
+  );
+  const {
+    user,
+    jwt: token,
+    error: userError,
+    loading: loadingUser,
+  } = useAppSelector(state => state.auth);
   const themeContext = useContext(ThemeContext);
+
+  const isLoading = [loadingNotes, loadingUser].some(
+    status => status === "pending"
+  );
+  const hasError = notesError || userError;
 
   // resetForm
   function resetForm() {
@@ -313,6 +323,7 @@ export default function Notes() {
 
   return (
     <Layout marginTop={60}>
+      {/* HEADER */}
       <Header>
         <Link href={`/${user?.username}/profile`}>
           <SecondaryButton
@@ -326,6 +337,7 @@ export default function Notes() {
         </Link>
       </Header>
 
+      {/* CONTENT AREA */}
       <Grid
         cols={"260px 1fr"}
         gap={"0"}
@@ -355,13 +367,16 @@ export default function Notes() {
           </List>
         </Sidebar>
 
-        {loadingNotes === "pending" ? (
-          <Spinner />
+        {isLoading ? (
+          <Spinner inline />
+        ) : hasError ? (
+          <ContentArea>Error WIP</ContentArea>
         ) : (
           <ContentArea>{renderBody(state)}</ContentArea>
         )}
       </Grid>
 
+      {/* FOOTER */}
       <Footer>
         <SecondaryText className="SecondaryText">
           {notes?.length} NOTES
