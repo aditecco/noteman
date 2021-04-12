@@ -46,6 +46,16 @@ export const notesSlice = createSlice({
     });
 
     /**
+     * getNotes.rejected
+     */
+    builder.addCase(getNotes.rejected, (state, action) => {
+      const { error } = action;
+
+      state.loading = "failed";
+      state.error = error;
+    });
+
+    /**
      * postNotes.pending
      */
     builder.addCase(postNotes.pending, state => {
