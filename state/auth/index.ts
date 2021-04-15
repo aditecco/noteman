@@ -53,6 +53,7 @@ export const authSlice = createSlice({
       return {
         ...state,
         ...{ loading: "succeeded" },
+        ...{ error: null },
         ...(action?.payload ?? {}),
       };
     });
@@ -81,6 +82,7 @@ export const authSlice = createSlice({
       return {
         ...state,
         ...{ loading: "succeeded" },
+        ...{ error: null },
         ...(action?.payload ?? {}),
       };
     });
@@ -107,6 +109,7 @@ export const authSlice = createSlice({
      */
     builder.addCase(getUser.fulfilled, function (state, action) {
       state.user = action?.payload;
+      state.error = null;
       state.loading = "succeeded";
     });
   },
