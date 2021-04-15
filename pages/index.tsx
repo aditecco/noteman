@@ -14,6 +14,7 @@ import AuthForm, { FieldConfig } from "../components/AuthForm";
 import { signInUser, signUpUser } from "../state/auth/thunks";
 import useAuthToken from "../hooks/useAuthToken";
 import { Spinner } from "../components/Spinner/Spinner";
+import { NotificationMessage } from "../components/NotificationMessage";
 
 export default function Index(): ReactElement | null {
   // state
@@ -22,7 +23,7 @@ export default function Index(): ReactElement | null {
 
   // hooks
   const dispatch = useAppDispatch();
-  const { loading } = useAuthToken();
+  const { loading, error } = useAuthToken();
 
   // ...
   const FIELDS: FieldConfig[] = [
@@ -124,6 +125,14 @@ export default function Index(): ReactElement | null {
           />
         </Container>
       )}
+
+      <NotificationMessage
+        enabled={!!error}
+        icon={"error"}
+        message={error?.message}
+        timeout={5000}
+        variant={"light"}
+      />
     </Layout>
   );
 }

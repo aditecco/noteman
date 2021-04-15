@@ -10,7 +10,9 @@ import { useRouter } from "next/router";
 import { UsersPermissionsUser } from "../gen/models";
 
 export default function useAuthToken() {
-  const { jwt: softToken, loading } = useAppSelector(state => state.auth);
+  const { jwt: softToken, loading, error } = useAppSelector(
+    state => state.auth
+  );
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -36,5 +38,5 @@ export default function useAuthToken() {
     }
   }, [softToken]);
 
-  return { softToken, loading };
+  return { softToken, loading, error };
 }
