@@ -36,6 +36,14 @@ export const notesSlice = createSlice({
     });
 
     /**
+     * getNotes.rejected
+     */
+    builder.addCase(getNotes.rejected, (state, action) => {
+      state.loading = "failed";
+      state.error = action?.error;
+    });
+
+    /**
      * getNotes
      * @param state
      * @param action
@@ -46,20 +54,18 @@ export const notesSlice = createSlice({
     });
 
     /**
-     * getNotes.rejected
-     */
-    builder.addCase(getNotes.rejected, (state, action) => {
-      const { error } = action;
-
-      state.loading = "failed";
-      state.error = error;
-    });
-
-    /**
      * postNotes.pending
      */
     builder.addCase(postNotes.pending, state => {
       state.loading = "pending";
+    });
+
+    /**
+     * postNotes.rejected
+     */
+    builder.addCase(postNotes.rejected, (state, action) => {
+      state.loading = "failed";
+      state.error = action?.error;
     });
 
     /**
@@ -80,6 +86,14 @@ export const notesSlice = createSlice({
     });
 
     /**
+     * putNotes.rejected
+     */
+    builder.addCase(putNotes.rejected, (state, action) => {
+      state.loading = "failed";
+      state.error = action?.error;
+    });
+
+    /**
      * putNotes
      * @param state
      * @param action
@@ -97,6 +111,14 @@ export const notesSlice = createSlice({
      */
     builder.addCase(deleteNotes.pending, state => {
       state.loading = "pending";
+    });
+
+    /**
+     * deleteNotes.rejected
+     */
+    builder.addCase(deleteNotes.rejected, (state, action) => {
+      state.loading = "failed";
+      state.error = action?.error;
     });
 
     /**

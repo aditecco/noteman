@@ -37,6 +37,14 @@ export const authSlice = createSlice({
     });
 
     /**
+     * signUpUser.rejected
+     */
+    builder.addCase(signUpUser.rejected, (state, action) => {
+      state.loading = "failed";
+      state.error = action?.error;
+    });
+
+    /**
      * signUpUser
      * @param state
      * @param action
@@ -57,6 +65,14 @@ export const authSlice = createSlice({
     });
 
     /**
+     * signInUser.rejected
+     */
+    builder.addCase(signInUser.rejected, (state, action) => {
+      state.loading = "failed";
+      state.error = action?.error;
+    });
+
+    /**
      * signInUser
      * @param state
      * @param action
@@ -74,6 +90,14 @@ export const authSlice = createSlice({
      */
     builder.addCase(getUser.pending, state => {
       state.loading = "pending";
+    });
+
+    /**
+     * getUser.rejected
+     */
+    builder.addCase(getUser.rejected, (state, action) => {
+      state.loading = "failed";
+      state.error = action?.error;
     });
 
     /**
