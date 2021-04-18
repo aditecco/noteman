@@ -34,6 +34,7 @@ export const authSlice = createSlice({
      */
     builder.addCase(signUpUser.pending, state => {
       state.loading = "pending";
+      state.error = null;
     });
 
     /**
@@ -63,6 +64,7 @@ export const authSlice = createSlice({
      */
     builder.addCase(signInUser.pending, state => {
       state.loading = "pending";
+      state.error = null;
     });
 
     /**
@@ -92,6 +94,7 @@ export const authSlice = createSlice({
      */
     builder.addCase(getUser.pending, state => {
       state.loading = "pending";
+      state.error = null;
     });
 
     /**
