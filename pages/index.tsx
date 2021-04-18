@@ -130,7 +130,7 @@ export default function Index(): ReactElement | null {
         enabled={!!error}
         icon={"error"}
         message={error?.message}
-        timeout={5000}
+        timeout={3000}
         variant={"light"}
       />
     </Layout>

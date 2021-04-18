@@ -1,6 +1,7 @@
 /* ---------------------------------
 _App
 --------------------------------- */
+
 import * as React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import normalize from "styled-normalize";
