@@ -13,7 +13,7 @@ import {
 } from "../../types";
 
 /**
- * signUpUser
+ * SIGN UP USER
  */
 export const signUpUser = createAsyncThunk(
   "auth/signUpUser",
@@ -24,16 +24,24 @@ export const signUpUser = createAsyncThunk(
       password: string;
     } /* identifier is undocumented */
   ) => {
-    return (await Gateway.postData("/auth/local/register", {
-      username: credentials?.identifier,
-      email: credentials?.identifier,
-      password: credentials?.password,
-    })) as InferredAuthLocalRegisterPostResponse;
+    try {
+      return (await Gateway.postData("/auth/local/register", {
+        username: credentials?.identifier,
+        email: credentials?.identifier,
+        password: credentials?.password,
+      })) as InferredAuthLocalRegisterPostResponse;
+    } catch (err) {
+      const { statusCode, error, message } = (err as InferredError) ?? {};
+
+      throw new Error(
+        `${statusCode} ${error}: ${message?.[0]?.messages?.[0].message}`
+      );
+    }
   }
 );
 
 /**
- * signInUser
+ * SIGN IN USER
  */
 export const signInUser = createAsyncThunk(
   "auth/signInUser",
@@ -47,23 +55,31 @@ export const signInUser = createAsyncThunk(
         password: credentials?.password,
       })) as InferredAuthLocalPostResponse;
     } catch (err) {
-      console.log("@thunk ", err);
+      const { statusCode, error, message } = (err as InferredError) ?? {};
 
       throw new Error(
-        `${err?.statusCode} ${err?.error} ${err?.message?.[0]?.messages?.[0].message}`
+        `${statusCode} ${error}: ${message?.[0]?.messages?.[0].message}`
       );
     }
   }
 );
 
 /**
- * getUser
+ * GET USER
  */
 export const getUser = createAsyncThunk(
   "auth/getUser",
   async (token: string) => {
-    return (await Gateway.getData("/users/me", {
-      headers: { Authorization: "Bearer " + token },
-    })) as UsersPermissionsUser;
+    try {
+      return (await Gateway.getData("/users/me", {
+        headers: { Authorization: "Bearer " + token },
+      })) as UsersPermissionsUser;
+    } catch (err) {
+      const { statusCode, error, message } = (err as InferredError) ?? {};
+
+      throw new Error(
+        `${statusCode} ${error}: ${message?.[0]?.messages?.[0].message}`
+      );
+    }
   }
 );
