@@ -20,6 +20,7 @@ export default function Index(): ReactElement | null {
   // state
   const [identifier, setIdentifier] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   // hooks
   const dispatch = useAppDispatch();
@@ -41,24 +42,55 @@ export default function Index(): ReactElement | null {
     },
   ];
 
+  const SIGNUP_FIELDS: FieldConfig[] = [
+    {
+      value: identifier,
+      placeholder: "username",
+      name: "username",
+    },
+    {
+      value: email,
+      placeholder: "email@example.com",
+      name: "email",
+      type: "email",
+    },
+    {
+      value: password,
+      placeholder: "password",
+      name: "password",
+      type: "password",
+    },
+  ];
+
   // handleChange
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    if (e?.target?.name === "identifier") {
-      setIdentifier(e.target.value);
-    }
+    switch (e?.target?.name) {
+      case "identifier":
+      case "username": {
+        setIdentifier(e.target.value);
+        break;
+      }
 
-    //
-    else if (e?.target?.name === "password") {
-      setPassword(e.target.value);
-    }
+      case "email": {
+        setEmail(e.target.value);
+        break;
+      }
 
-    //
-    else return;
+      case "password": {
+        setPassword(e.target.value);
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
   }
 
   // resetFields
   function resetFields() {
     setIdentifier("");
+    setEmail("");
     setPassword("");
   }
 
@@ -67,18 +99,23 @@ export default function Index(): ReactElement | null {
     return async function (e: React.FormEvent) {
       e?.preventDefault?.();
 
-      // TODO display an error msg
-      if (!identifier || !password) return;
-
-      const creds = { identifier, password };
-
-      // dispatch login action
       if (intent === "login") {
+        // TODO display an error msg
+        if (!identifier || !password) return;
+
+        const creds = { identifier, password };
+
+        // dispatch login action
         await dispatch(signInUser(creds));
       }
 
       // dispatch signup action
       else if (intent === "signup") {
+        // TODO display an error msg
+        if (!identifier || !email || !password) return;
+
+        const creds = { identifier, email, password };
+
         await dispatch(signUpUser(creds));
       }
 
@@ -98,6 +135,7 @@ export default function Index(): ReactElement | null {
         <Container>
           <Heading align={"center"}>Login or create an account</Heading>
           <TabSwitcher
+            onTabSwitch={resetFields}
             tabs={[
               {
                 name: "Login",
@@ -114,7 +152,7 @@ export default function Index(): ReactElement | null {
                 name: "Signup",
                 content: (
                   <AuthForm
-                    fields={FIELDS}
+                    fields={SIGNUP_FIELDS}
                     handleChange={handleChange}
                     submitLabel={"Signup"}
                     handleSubmit={handleSubmit("signup")}

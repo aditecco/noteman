@@ -21,13 +21,14 @@ export const signUpUser = createAsyncThunk(
   async (
     credentials: {
       identifier: string;
+      email: string;
       password: string;
     } /* identifier is undocumented */
   ) => {
     try {
       return (await Gateway.postData("/auth/local/register", {
         username: credentials?.identifier,
-        email: credentials?.identifier,
+        email: credentials?.email,
         password: credentials?.password,
       })) as InferredAuthLocalRegisterPostResponse;
     } catch (err) {
