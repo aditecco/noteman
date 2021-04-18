@@ -12,6 +12,7 @@ type TabConfig = {
 
 interface TabSwitcherProps {
   tabs: TabConfig[];
+  onTabSwitch?: () => void;
 }
 
 // StyledTabSwitcher
@@ -67,8 +68,19 @@ const StyledTabSwitcher = styled.div`
 `;
 
 // TabSwitcher
-export default function TabSwitcher({ tabs }: TabSwitcherProps): ReactElement {
+export default function TabSwitcher({
+  tabs,
+  onTabSwitch,
+}: TabSwitcherProps): ReactElement {
   const [selected, setSelected] = useState(0);
+
+  function handleTabSwitch(tab: number) {
+    return function () {
+      setSelected(tab);
+
+      onTabSwitch && onTabSwitch();
+    };
+  }
 
   return (
     <StyledTabSwitcher>
@@ -80,7 +92,7 @@ export default function TabSwitcher({ tabs }: TabSwitcherProps): ReactElement {
             className={`TabButton ${
               selected === k ? "TabButton--selected" : ""
             }`}
-            onClick={() => setSelected(k)}
+            onClick={handleTabSwitch(k)}
           >
             {tab.name}
           </button>
