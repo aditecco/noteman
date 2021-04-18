@@ -9,6 +9,7 @@ import {
   InferredAuthLocalPostRequestBody,
   InferredAuthLocalPostResponse,
   InferredAuthLocalRegisterPostResponse,
+  InferredError,
 } from "../../types";
 
 /**
@@ -40,10 +41,18 @@ export const signInUser = createAsyncThunk(
   async (
     credentials: InferredAuthLocalPostRequestBody /* identifier is undocumented */
   ) => {
-    return (await Gateway.postData("/auth/local", {
-      identifier: credentials?.identifier,
-      password: credentials?.password,
-    })) as InferredAuthLocalPostResponse;
+    try {
+      return (await Gateway.postData("/auth/local", {
+        identifier: credentials?.identifier,
+        password: credentials?.password,
+      })) as InferredAuthLocalPostResponse;
+    } catch (err) {
+      console.log("@thunk ", err);
+
+      throw new Error(
+        `${err?.statusCode} ${err?.error} ${err?.message?.[0]?.messages?.[0].message}`
+      );
+    }
   }
 );
 
