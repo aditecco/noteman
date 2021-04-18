@@ -23,6 +23,26 @@ export type InferredAuthLocalPostResponse = {
 export type InferredAuthLocalRegisterPostResponse = InferredAuthLocalPostResponse;
 
 /**
+ * API Errors
+ */
+
+export type InferredErrorMessage = {
+  id: string;
+  message: string;
+};
+
+export type InferredErrorMessageCollector = {
+  messages: InferredErrorMessage[];
+};
+
+export type InferredError = {
+  statusCode: number;
+  error: string;
+  message: InferredErrorMessageCollector[];
+  data: InferredErrorMessageCollector[];
+};
+
+/**
  * models re-export
  */
 export * from "../gen/models";
