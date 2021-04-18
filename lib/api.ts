@@ -2,9 +2,10 @@
 APIGateway
 --------------------------------- */
 
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { ModelError } from "../gen/models";
 import { log } from "../util";
+import { InferredError } from "../types";
 
 export default class APIGateway {
   private client: any;
@@ -41,7 +42,7 @@ export default class APIGateway {
 
       return response?.data ?? {};
     } catch (err) {
-      this.errorHandler(err);
+      this.errorHandler(err, endpoint);
     }
   }
 
@@ -65,7 +66,7 @@ export default class APIGateway {
 
       return response?.data ?? {};
     } catch (err) {
-      this.errorHandler(err);
+      this.errorHandler(err, endpoint);
     }
   }
 
@@ -89,7 +90,7 @@ export default class APIGateway {
 
       return response?.data ?? {};
     } catch (err) {
-      this.errorHandler(err);
+      this.errorHandler(err, endpoint);
     }
   }
 
@@ -99,6 +100,7 @@ export default class APIGateway {
    * @param opts
    */
   async deleteData(endpoint: string, opts?: Record<string, unknown>) {
+    // @ts-ignore
     try {
       const response: AxiosResponse = await this.client.delete(
         this.baseURL + endpoint,
@@ -107,43 +109,19 @@ export default class APIGateway {
 
       return response?.data ?? {};
     } catch (err) {
-      this.errorHandler(err);
+      this.errorHandler(err, endpoint);
     }
   }
 
   /**
    * errorHandler
    * @param error
+   * @param location
    */
-  errorHandler(error: ModelError) {
-    console.error(error);
+  errorHandler(error: AxiosError<InferredError>, location?: string) {
+    location &&
+      console.error(`Error @${location}: ${error?.response?.statusText}`);
 
-    throw new Error(error.message);
+    throw error?.response?.data;
   }
 }
-
-/*
-*
-*
-* export async function fetchAPI(path, options = {}) {
-  const defaultOptions = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }
-  const mergedOptions = {
-    ...defaultOptions,
-    ...options,
-  }
-  const requestUrl = getStrapiURL(path)
-  const response = await fetch(requestUrl, mergedOptions)
-
-  if (!response.ok) {
-    console.error(response.statusText)
-    throw new Error(`An error occured please try again`)
-  }
-  const data = await response.json()
-  return data
-}
-*
-* */
