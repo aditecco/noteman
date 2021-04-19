@@ -10,6 +10,7 @@ export const Navbar = styled.nav.attrs({ className: "Navbar" })`
   left: 0;
   right: 0;
   color: white;
+  //background-color: rgba(236, 240, 241, 0.9);
   background-color: #fafafa;
   display: flex;
   justify-content: space-between;

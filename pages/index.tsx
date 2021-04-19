@@ -132,7 +132,7 @@ export default function Index(): ReactElement | null {
       {loading === "pending" ? (
         <Spinner />
       ) : (
-        <Container>
+        <Container maxWidth={460}>
           <Heading align={"center"}>Login or create an account</Heading>
           <TabSwitcher
             onTabSwitch={resetFields}
