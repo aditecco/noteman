@@ -25,7 +25,6 @@ import { Note } from "../components/Note";
 import Header from "../components/Header";
 import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { signOutUser } from "../state/auth";
 import {
   deleteNotes,
   getNotes,
@@ -33,10 +32,9 @@ import {
   putNotes,
 } from "../state/notes/thunks";
 import { NewNotes, Notes as _Notes } from "../gen/models";
-import { router } from "next/client";
-import { destroyNotes } from "../state/notes";
 import { MaterialIcon } from "../components/MaterialIcon";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 // types
 enum LocalStates {
@@ -97,6 +95,7 @@ export default function Notes() {
   const [content, setContent] = useState<Partial<NewNotes>>(INITIAL_CONTENT);
 
   // hooks
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { notes, loading: loadingNotes, error: notesError } = useAppSelector(
     state => state.notes
@@ -310,15 +309,17 @@ export default function Notes() {
     const JWT = sessionStorage?.getItem?.(TOKEN_STORAGE_KEY);
     const _token = token ?? JWT;
 
-    dispatch(
-      getNotes({
-        authorId: user?.id,
-        token: _token,
-      })
-    ).then(({ payload }) => {
-      setCurrentNote((payload as _Notes[])?.[0] ?? {});
-      setState(LocalStates.reading);
-    });
+    if (_token) {
+      dispatch(
+        getNotes({
+          authorId: user?.id,
+          token: _token,
+        })
+      ).then(({ payload }) => {
+        setCurrentNote((payload as _Notes[])?.[0] ?? {});
+        setState(LocalStates.reading);
+      });
+    } else router.replace("/");
   }, []);
 
   return (
