@@ -326,7 +326,7 @@ export default function Notes() {
     <Layout marginTop={60}>
       {/* HEADER */}
       <Header>
-        <Link href={`/${user?.username}/profile`}>
+        <Link href={`/profile/${user?.username}`}>
           <SecondaryButton
             type={"button"}
             variant={"small"}

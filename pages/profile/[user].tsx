@@ -1,5 +1,5 @@
 /* ---------------------------------
-Profile
+[user]
 --------------------------------- */
 
 import * as React from "react";
@@ -22,7 +22,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 
 type OwnProps = {};
 
-export default function Profile({}: PropsWithChildren<OwnProps>): ReactElement | null {
+export default function UserProfile({}: PropsWithChildren<OwnProps>): ReactElement | null {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user: username } = router.query;
@@ -54,11 +54,11 @@ export default function Profile({}: PropsWithChildren<OwnProps>): ReactElement |
           <Heading>Hey, {username}!</Heading>
           <List>
             <ListItem>
-              <BodyText>Your username: {user?.username}</BodyText>
+              <BodyText>{user?.username}</BodyText>
             </ListItem>
 
             <ListItem>
-              <BodyText>Your email: {user?.email}</BodyText>
+              <BodyText>{user?.email}</BodyText>
             </ListItem>
           </List>
 
