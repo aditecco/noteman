@@ -11,6 +11,7 @@ declare module "classnames";
 declare module "styled-components" {
   export interface DefaultTheme {
     accent01: string;
+    accent01light: string;
     accent02: string;
     alternateFontColorLight01: string;
     alternateFontColorDark01: string;

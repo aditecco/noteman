@@ -3,10 +3,12 @@ Style constants
 --------------------------------- */
 
 import { DefaultTheme } from "styled-components";
+import chroma from "chroma-js";
 
 export const defaultTheme: DefaultTheme = {
   accent01: "rebeccapurple",
   accent02: "",
+  accent01light: chroma("rebeccapurple").alpha(0.5).hex(),
   alternateFontColorLight01: "whitesmoke",
   alternateFontColorDark01: "darkgray",
   backgroundDark01: "",
