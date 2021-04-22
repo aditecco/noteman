@@ -10,6 +10,7 @@
     "@babel/runtime": "^7.11.2",
     "@reduxjs/toolkit": "^1.5.0",
     "axios": "^0.21.1",
+    "chroma-js": "^2.1.1",
     "classnames": "^2.3.1",
     "fontsource-ibm-plex-sans": "^3.1.5",
     "fontsource-karla": "^3.1.6",
