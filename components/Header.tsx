@@ -16,7 +16,9 @@ export default function Header({
   return (
     <Navbar>
       <Link href={"/"}>
-        <Logo />
+        <a>
+          <Logo />
+        </a>
       </Link>
 
       {children}
