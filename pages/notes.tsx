@@ -322,6 +322,10 @@ export default function Notes() {
     } else router.replace("/");
   }, []);
 
+  useEffect(() => {
+    !user && router.push("/");
+  }, [user]);
+
   return (
     <Layout marginTop={60}>
       {/* HEADER */}
