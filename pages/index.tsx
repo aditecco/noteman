@@ -30,9 +30,8 @@ export default function Index(): ReactElement | null {
   const FIELDS: FieldConfig[] = [
     {
       value: identifier,
-      placeholder: "email@example.com or username",
+      placeholder: "email or username",
       name: "identifier",
-      // type: "email",
     },
     {
       value: password,
