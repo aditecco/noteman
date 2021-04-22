@@ -16,7 +16,7 @@ export default function Header({
   return (
     <Navbar>
       <Link href={"/"}>
-        <a>
+        <a style={{ textDecoration: "none" }}>
           <Logo />
         </a>
       </Link>
