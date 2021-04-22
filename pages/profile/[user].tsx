@@ -33,10 +33,15 @@ export default function UserProfile({}: PropsWithChildren<OwnProps>): ReactEleme
     dispatch(signOutUser());
     dispatch(destroyNotes());
 
-    sessionStorage?.removeItem?.(TOKEN_STORAGE_KEY);
-    sessionStorage?.removeItem?.(USER_STORAGE_KEY);
-
     router.push("/");
+  }
+
+  // clearStorage
+  function clearStorage(callback) {
+    sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+    sessionStorage.removeItem(USER_STORAGE_KEY);
+
+    callback();
   }
 
   return (
@@ -62,7 +67,9 @@ export default function UserProfile({}: PropsWithChildren<OwnProps>): ReactEleme
             </ListItem>
           </List>
 
-          <SecondaryButton onClick={handleLogout}>Logout</SecondaryButton>
+          <SecondaryButton onClick={() => clearStorage(handleLogout)}>
+            Logout
+          </SecondaryButton>
         </ContentArea>
       </Container>
     </Layout>
