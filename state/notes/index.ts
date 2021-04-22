@@ -33,6 +33,7 @@ export const notesSlice = createSlice({
      */
     builder.addCase(getNotes.pending, state => {
       state.loading = "pending";
+      state.error = null;
     });
 
     /**
@@ -51,6 +52,7 @@ export const notesSlice = createSlice({
     builder.addCase(getNotes.fulfilled, function (state, action) {
       state.notes = action?.payload ?? [];
       state.loading = "succeeded";
+      state.error = null;
     });
 
     /**
@@ -58,6 +60,7 @@ export const notesSlice = createSlice({
      */
     builder.addCase(postNotes.pending, state => {
       state.loading = "pending";
+      state.error = null;
     });
 
     /**
@@ -76,6 +79,7 @@ export const notesSlice = createSlice({
     builder.addCase(postNotes.fulfilled, function (state, action) {
       state.notes.push(action?.payload);
       state.loading = "succeeded";
+      state.error = null;
     });
 
     /**
@@ -83,6 +87,7 @@ export const notesSlice = createSlice({
      */
     builder.addCase(putNotes.pending, state => {
       state.loading = "pending";
+      state.error = null;
     });
 
     /**
@@ -104,6 +109,7 @@ export const notesSlice = createSlice({
 
       state.notes[which] = modified;
       state.loading = "succeeded";
+      state.error = null;
     });
 
     /**
@@ -111,6 +117,7 @@ export const notesSlice = createSlice({
      */
     builder.addCase(deleteNotes.pending, state => {
       state.loading = "pending";
+      state.error = null;
     });
 
     /**
@@ -132,6 +139,7 @@ export const notesSlice = createSlice({
 
       state.notes.splice(which, 1);
       state.loading = "succeeded";
+      state.error = null;
     });
   },
 });
