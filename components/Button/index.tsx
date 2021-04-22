@@ -63,7 +63,7 @@ export const SecondaryButton = styled(Button)`
 
 // CompactButton
 export const CompactButton = styled(SecondaryButton)`
-  border: 1.25px solid ${props => props.color ?? props.theme.accent01};
+  border: 1.25px solid ${props => props.color ?? props.theme.accent01light};
   justify-content: center;
   min-width: ${rem(80)};
 
