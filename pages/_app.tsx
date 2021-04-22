@@ -5,7 +5,7 @@ _App
 import * as React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import normalize from "styled-normalize";
-import { defaultTheme } from "../components/theme";
+import { defaultTheme } from "../theme/theme";
 import ErrorBoundary from "../components/ErrorBoundary";
 import "fontsource-material-icons/base-400-normal.css";
 import "fontsource-karla/400-normal.css";
