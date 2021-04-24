@@ -47,6 +47,7 @@ export const Note = styled(_Note)`
   min-height: 100%;
 
   .note-content {
+    padding: 1rem 0;
     line-height: 1.6;
     color: #5e5e5e;
 
