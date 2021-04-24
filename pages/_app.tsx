@@ -10,6 +10,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 import "fontsource-material-icons/base-400-normal.css";
 import "fontsource-karla/400-normal.css";
 import "fontsource-ibm-plex-sans/400-normal.css";
+import "fontsource-ibm-plex-sans/300-normal.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { store } from "../state/store";
 import { Provider } from "react-redux";

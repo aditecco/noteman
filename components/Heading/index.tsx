@@ -16,6 +16,6 @@ export const Heading = styled.h3.attrs({ className: "Heading" })<OwnProps>`
   margin: ${props => props.thinMargin && "6px 0"};
   text-transform: capitalize;
   text-align: ${props => props.align || "left"};
-  font-family: "IBM Plex Sans Light", sans-serif;
-  font-weight: normal;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
 `;
