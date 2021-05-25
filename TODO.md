@@ -1,6 +1,8 @@
 # TODO
 
-### It should:
+### Requirements
+
+#### It should:
 
 - [ ] Provide an account profile page
 - [ ] Provide an account settings page
@@ -26,6 +28,7 @@
 
 ### Implementation:
 
+- [ ] Convert API calls to GraphQL
 - [ ] clean-up code
 - [ ] add UI animations
 - [ ] refine styles
@@ -46,10 +49,12 @@
 
 ### Fixes
 
+- [ ] [PROD] "TypeError: can't access property "pending", a.c is undefined" on page load, homepage
+- [ ] [PROD] When reloading, the user stays logged-in but can't write to the back-end (invalid token)
 - [ ] Note update on PUT /notes
 - [ ] TS fixes
-- [ ] user/token loop in index
 - [ ] make styled CSS values dynamic with theme
+- [x] user/token loop in index
 - [x] Selected note on /notes load
 - [x] extraReducers TS fixes (https://redux-toolkit.js.org/usage/usage-with-typescript#type-safety-with-extrareducers)
 - [x] remove Meteor residual stuff
@@ -65,4 +70,5 @@
 ### Ops
 
 - [x] deploy back-end
-- [ ] fix DB access
+- [x] fix DB access
+- [x] fix env issue
